@@ -15,11 +15,10 @@
     "index.ts",
     "artifacts/**/*.json",
     "src",
-    "typechain-types"
+    "typechain-types",
   ],
   // The intent here is to only include src/ and Smart Contract artifacts and types.
   "exclude": [
-    "node_modules",
     "dist",
     "hardhat",
     "tasks",
