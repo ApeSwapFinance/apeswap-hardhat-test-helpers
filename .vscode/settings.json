@@ -1,12 +1,13 @@
 {
     "workbench.colorCustomizations": {
-        "activityBar.background": "#fff000",
-        "activityBar.foreground": "#000000",
+        "activityBar.background": "#785b1c",
+        "activityBar.foreground": "#FFFFFF",
         "titleBar.activeBackground": "#000000",
         "titleBar.activeForeground": "#F2FEF4"
     },
     "cSpell.words": [
         "ARBISCAN",
+        "dont",
         "mixedcase",
         "nomicfoundation",
         "nomiclabs",
