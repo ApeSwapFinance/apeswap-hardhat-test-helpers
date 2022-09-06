@@ -4,43 +4,60 @@ import { ether } from './utils'
 // Setup DEX Contracts
 import ApeFactoryBuild from './artifacts-apeswap/dex/contracts/ApeFactory.json'
 import ApeRouterBuild from './artifacts-apeswap/dex/contracts/ApeRouter.json'
-// import ApePairBuild from '../artifacts-apeswap/dex/contracts/ApePair.json');
+import ApePairBuild from './artifacts-apeswap/dex/contracts/ApePair.json'
 
 // Setup Token Contracts
 import ERC20MockBuild from './artifacts-apeswap/token/contracts/ERC20Mock.json'
 import WNativeBuild from './artifacts-apeswap/token/contracts/WNative.json'
 
+// Import Contract Types
+import {
+  ApeFactory__factory,
+  ApeRouter__factory,
+  ApePair,
+  ApePair__factory,
+  ERC20Mock,
+  ERC20Mock__factory,
+  WNative__factory,
+} from '../typechain-types'
 
 /**
- * Deploy a mock dex. 
- * 
+ * Deploy a mock dex.
+ *
  * - LP fees are sent to `feeTo`
  * - Initial LP tokens are minted to `alice`
  */
 // NOTE: Currently does not create a BANANA/WBNB pair
 export async function deployMockDex(
   ethers: HardhatEthersHelpers,
-  [owner, feeTo, alice]: [SignerWithAddress, SignerWithAddress, SignerWithAddress],
+  [owner, feeTo, alice]: [
+    SignerWithAddress,
+    SignerWithAddress,
+    SignerWithAddress
+  ],
   numPairs = 2
 ) {
-  const ApeFactory = await ethers.getContractFactory(
+  const ApeFactory = (await ethers.getContractFactory(
     ApeFactoryBuild.abi,
     ApeFactoryBuild.bytecode
-  )
-  const ApeRouter = await ethers.getContractFactory(
+  )) as ApeFactory__factory
+  const ApeRouter = (await ethers.getContractFactory(
     ApeRouterBuild.abi,
     ApeRouterBuild.bytecode
-  )
-  // const ApePair = await ethers.getContractFactory(ApePairBuild.abi, ApePairBuild.bytecode);
+  )) as ApeRouter__factory
+  const ApePair = (await ethers.getContractFactory(
+    ApePairBuild.abi,
+    ApePairBuild.bytecode
+  )) as ApePair__factory
   // Setup Token Contracts
-  const ERC20Mock = await ethers.getContractFactory(
+  const ERC20Mock = (await ethers.getContractFactory(
     ERC20MockBuild.abi,
     ERC20MockBuild.bytecode
-  )
-  const WNative = await ethers.getContractFactory(
+  )) as ERC20Mock__factory
+  const WNative = (await ethers.getContractFactory(
     WNativeBuild.abi,
     WNativeBuild.bytecode
-  )
+  )) as WNative__factory
 
   const TOKEN_BASE_BALANCE = ether('1000')
   const WBNB_BASE_BALANCE = ether('1')
@@ -49,15 +66,23 @@ export async function deployMockDex(
 
   // Setup pairs
   const mockWBNB = await WNative.connect(owner).deploy()
-  const dexRouter = await ApeRouter.connect(owner).deploy(dexFactory.address, mockWBNB.address)
-  const mockTokens = []
-  const dexPairs = []
+  const dexRouter = await ApeRouter.connect(owner).deploy(
+    dexFactory.address,
+    mockWBNB.address
+  )
+  const mockTokens: ERC20Mock[] = []
+  const dexPairs: ApePair[] = []
   for (let index = 0; index < numPairs; index++) {
     // Mint pair token
-    const mockToken = await ERC20Mock.connect(owner).deploy(`Mock Token ${index}`, `MOCK${index}`)
+    const mockToken = await ERC20Mock.connect(owner).deploy(
+      `Mock Token ${index}`,
+      `MOCK${index}`
+    )
 
     await mockToken.connect(owner).mint(TOKEN_BASE_BALANCE)
-    await mockToken.connect(owner).approve(dexRouter.address, TOKEN_BASE_BALANCE)
+    await mockToken
+      .connect(owner)
+      .approve(dexRouter.address, TOKEN_BASE_BALANCE)
 
     await dexRouter.connect(owner).addLiquidityETH(
       mockToken.address, // token
@@ -71,10 +96,10 @@ export async function deployMockDex(
       }
     )
 
-    const pairCreated = await dexFactory.getPair(
+    const pairCreated = await ApePair.attach(await dexFactory.getPair(
       mockToken.address,
       mockWBNB.address
-    )
+    ));
 
     // NOTE: Alternative way to create pairs directly through ApeFactory
     // Create an initial pair

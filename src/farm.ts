@@ -7,6 +7,14 @@ import BananaSplitBarBuild from './artifacts-apeswap/farm/contracts/BananaSplitB
 import MasterApeBuild from './artifacts-apeswap/farm/contracts/MasterApe.json'
 import { Contract } from 'ethers'
 
+// Import Contract Types 
+import {
+  BananaToken__factory,
+  BananaSplitBar__factory, 
+  MasterApe__factory, 
+  MasterApe,
+} from '../typechain-types'
+
 /**
  * Deploy a mock farm.
  */
@@ -21,15 +29,15 @@ export async function deployMockFarm(
   const BananaToken = await ethers.getContractFactory(
     BananaTokenBuild.abi,
     BananaTokenBuild.bytecode
-  )
+  ) as BananaToken__factory
   const BananaSplitBar = await ethers.getContractFactory(
     BananaSplitBarBuild.abi,
     BananaSplitBarBuild.bytecode
-  )
+  ) as BananaSplitBar__factory
   const MasterApe = await ethers.getContractFactory(
     MasterApeBuild.abi,
     MasterApeBuild.bytecode
-  )
+  ) as MasterApe__factory
   // Setup BananaToken
   const bananaToken = await BananaToken.connect(owner).deploy()
 
@@ -65,13 +73,11 @@ export async function deployMockFarm(
  */
 export async function addPoolsToFarm(
   [owner]: [SignerWithAddress],
-  masterApe: Contract,
+  masterApe: MasterApe,
   dexPairs: Contract[]
 ) {
   const BASE_ALLOCATION = 100
   for (const dexPair of dexPairs) {
-    await masterApe.add(BASE_ALLOCATION, dexPair.address, false, {
-      from: owner,
-    })
+    await masterApe.connect(owner).add(BASE_ALLOCATION, dexPair.address, false)
   }
 }
