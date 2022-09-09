@@ -1,6 +1,6 @@
 {
   "name": "@ape.swap/hardhat-test-helpers",
-  "version": "0.0.3-alpha.2",
+  "version": "0.1.0",
   "description": "Install this package to get access to deployable ApeSwap Mock Farm and DEX for testing with contracts developed with the Hardhat framework.",
   "main": "./dist/index.js",
   "files": [
