@@ -7,7 +7,7 @@
     "dist"
   ],
   "scripts": {
-    "prebuild": "yarn audit && yarn compile && yarn lint:sol && yarn clean ./dist",
+    "prebuild": "yarn audit && yarn lint:sol && yarn compile && yarn clean ./dist",
     "build": "tsc",
     "precompile": "yarn clean ./artifacts",
     "compile": "hardhat compile",
