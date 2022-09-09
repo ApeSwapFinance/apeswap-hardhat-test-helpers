@@ -3,6 +3,9 @@
   "version": "0.0.3-alpha.2",
   "description": "Install this package to get access to deployable ApeSwap Mock Farm and DEX for testing with contracts developed with the Hardhat framework.",
   "main": "./dist/index.js",
+  "files": [
+    "dist"
+  ],
   "scripts": {
     "prebuild": "yarn audit && yarn compile && yarn lint:sol && yarn clean ./dist",
     "build": "tsc",
