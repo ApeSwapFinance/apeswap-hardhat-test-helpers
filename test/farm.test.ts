@@ -23,7 +23,7 @@ describe("MasterApe", function () {
   // We define a fixture to reuse the same setup in every test.
   // We use loadFixture to run this setup once, snapshot that state,
   // and reset Hardhat Network to that snapshot in every test.
-  async function deployMockFarm() {
+  async function deployMockFarmFixture() {
     // Contracts are deployed using the first signer/account by default
     const [owner, feeTo, alice] = await ethers.getSigners();
 
@@ -47,7 +47,7 @@ describe("MasterApe", function () {
   }
 
   it('should have proper pool length', async () => {
-    const mockFarm = await loadFixture(deployMockFarm);
+    const mockFarm = await loadFixture(deployMockFarmFixture);
     expect((await mockFarm.masterApe.poolLength()).toString()).to.equal('1');
   });
 });

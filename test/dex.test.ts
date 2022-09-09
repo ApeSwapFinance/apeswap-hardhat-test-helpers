@@ -29,7 +29,7 @@ describe("ApeFactory", function () {
   // We define a fixture to reuse the same setup in every test.
   // We use loadFixture to run this setup once, snapshot that state,
   // and reset Hardhat Network to that snapshot in every test.
-  async function deployMockDex() {
+  async function deployMockDexFixture() {
     // Contracts are deployed using the first signer/account by default
     const [owner, feeTo, alice] = await ethers.getSigners();
 
@@ -68,35 +68,35 @@ describe("ApeFactory", function () {
   }
 
   it('should have proper pair length', async () => {
-    const mockDex = await loadFixture(deployMockDex);
+    const mockDex = await loadFixture(deployMockDexFixture);
     expect((await mockDex.dexFactory.allPairsLength()).toString()).to.equal('5');
   });
 
   it('should have properly deployed router', async () => {
-    const mockDex = await loadFixture(deployMockDex);
+    const mockDex = await loadFixture(deployMockDexFixture);
     expect(await mockDex.dexRouter.factory()).to.equal(mockDex.dexFactory.address);
   });
 
   it('should get quote', async () => {
-    const mockDex = await loadFixture(deployMockDex);
+    const mockDex = await loadFixture(deployMockDexFixture);
     const quote = await mockDex.dexRouter.quote(ether('1'), ether('100'), ether('100'));
     expect(quote.toString()).to.not.equal('0');
   });
 
   it('should get amount out with values', async () => {
-    const mockDex = await loadFixture(deployMockDex);
+    const mockDex = await loadFixture(deployMockDexFixture);
     const getAmountsOut = await mockDex.dexRouter.getAmountOut(ether('1'), ether('100'), ether('100'));
     expect(getAmountsOut).to.be.greaterThan(0);
   });
 
   it('should get amounts out with path', async () => {
-    const mockDex = await loadFixture(deployMockDex);
+    const mockDex = await loadFixture(deployMockDexFixture);
     const getAmountsOut = await mockDex.dexRouter.getAmountsOut(ether('.0005'), [mockDex.mockTokens[0].address, mockDex.mockWBNB.address]);
     expect(getAmountsOut[0]).to.be.greaterThan(0)
   });
 
   it('should add liquidity', async () => {
-    const mockDex = await loadFixture(deployMockDex);
+    const mockDex = await loadFixture(deployMockDexFixture);
     const owner = mockDex.accounts.owner;
     await mockDex.mockToken0.connect(owner).approve(mockDex.dexRouter.address, ether('1'));
     await mockDex.mockToken1.connect(owner).approve(mockDex.dexRouter.address, ether('1'));
