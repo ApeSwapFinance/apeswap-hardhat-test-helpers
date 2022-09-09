@@ -10,7 +10,9 @@ Install this package to get access to deployable ApeSwap Mock Farm and DEX for t
 `yarn add -D @ape.swap/hardhat-test-helpers`
 
 ## Usage
+Refer to the example code below on how to import and use these helpers.
 
+### Deploy a Mock DEX
 ```typescript
 import { loadFixture } from '@nomicfoundation/hardhat-network-helpers'
 import { dex, farm } from '@ape.swap/hardhat-test-helpers'
@@ -31,9 +33,34 @@ async function deployMockDexFixture() {
   }
 }
 
-it("Should set the right unlockTime", async function () {
+it("Should have the dexRouter configured properly", async function () {
   const { accounts, dexRouter, dexFactory } = await loadFixture(deployMockDexFixture);
 
   expect(await dexRouter.factory()).to.equal(dexFactory.address);
 });
+```
+
+### Deploy a Mock Farm
+```typescript
+import { loadFixture } from '@nomicfoundation/hardhat-network-helpers'
+import { dex, farm } from '@ape.swap/hardhat-test-helpers'
+
+async function deployMockFarmFixture() {
+  const [owner, feeTo, alice] = await ethers.getSigners()
+
+  const { bananaToken, bananaSplitBar, masterApe } =
+    await farm.deployMockFarm(ethers, [owner, feeTo], {})
+
+  return {
+    accounts: { owner, feeTo, alice },
+    bananaToken,
+    bananaSplitBar,
+    masterApe,
+  }
+}
+
+it('Should set the right owner of masterApe', async function () {
+  const { accounts, masterApe } = await loadFixture(deployMockFarmFixture)
+  expect(await masterApe.owner()).to.equal(accounts.owner.address)
+})
 ```
