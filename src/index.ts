@@ -4,4 +4,5 @@
  */
 export * as dex from './dex';
 export * as farm from './farm';
+export * as token from './token';
 export * as utils from './utils';
