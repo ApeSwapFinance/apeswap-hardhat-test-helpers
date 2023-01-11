@@ -22,7 +22,6 @@ export async function deployMockTokens(
   {
     numTokens = 1,
     tokenBaseBalance = ether('1000'),
-    wbnbBaseBalance = ether('1')
   }
 ) {
   // Setup Token Contracts
