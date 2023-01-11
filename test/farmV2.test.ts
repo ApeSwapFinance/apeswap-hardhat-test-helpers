@@ -1,4 +1,4 @@
-import { loadFixture } from '@nomicfoundation/hardhat-network-helpers'
+import { loadFixture, mine } from '@nomicfoundation/hardhat-network-helpers'
 import { farmV2 } from '../src'
 import { ether } from '../src/utils'
 
@@ -45,47 +45,46 @@ describe('MasterApeV2', function () {
   }
 
   it('Should earn banana rewards', async () => {
-    const mockFarm = await loadFixture(deployMockFarmFixture)
+    const { masterApe, masterApeV2, bananaToken, accounts } = await loadFixture(deployMockFarmFixture)
+    expect((await masterApeV2.poolLength()).toString()).to.equal('1')
+    // Setup MAv2 Pools
     const { mockWBNB, mockTokens } = await deployMockTokens(
       ethers,
-      [mockFarm.accounts.alice],
+      [accounts.alice],
       {
         numTokens: 1,
       }
     )
-    expect((await mockFarm.masterApeV2.poolLength()).toString()).to.equal('0')
+    const depositTokenV2 = mockTokens[0];
     await farmV2.addPoolsToFarm(
-      [mockFarm.accounts.owner],
-      mockFarm.masterApeV2,
-      [mockTokens[0]]
+      [accounts.owner],
+      masterApeV2,
+      [depositTokenV2]
     )
-    expect((await mockFarm.masterApeV2.poolLength()).toString()).to.equal('1')
-
-    const beforeBalance = await mockFarm.bananaToken.balanceOf(
-      mockFarm.accounts.alice.address
+    expect((await masterApeV2.poolLength()).toString()).to.equal('2')
+    // Check that rewards are flowing into MAv2
+    await masterApeV2.harvestFromMasterApe();
+    const bananaRewards = (await masterApeV2.availableBananaRewards())
+    expect(bananaRewards).to.be.gt(0);
+    // Test pool deposits and rewards
+    const beforeBalance = await bananaToken.balanceOf(
+      accounts.alice.address
     )
+    await depositTokenV2
+      .connect(accounts.alice)
+      .approve(masterApeV2.address, ether('1'))
+    await masterApeV2
+      .connect(accounts.alice)
+      .deposit(1, ether('1'))
 
-    await mockTokens[0]
-      .connect(mockFarm.accounts.alice)
-      .approve(mockFarm.masterApeV2.address, ether('1'))
+    await mine(10);
 
-    console.log('it reaches here')
-    await mockFarm.masterApeV2
-      .connect(mockFarm.accounts.alice)
-      .deposit(0, ether('1'))
-    console.log('it does NOT reach here')
-
-    const bananaRewards = await mockFarm.masterApeV2.availableBananaRewards()
-    expect(bananaRewards).to.be.gt(0)
-
-    await mockFarm.masterApeV2
-      .connect(mockFarm.accounts.alice)
-      .withdraw(0, ether('1'))
-
-    const afterBalance = await mockFarm.bananaToken.balanceOf(
-      mockFarm.accounts.alice.address
+    await masterApeV2
+      .connect(accounts.alice)
+      .withdraw(1, ether('1'))
+    const afterBalance = await bananaToken.balanceOf(
+      accounts.alice.address
     )
-
     expect(Number(afterBalance)).to.be.gt(Number(beforeBalance))
   })
 
