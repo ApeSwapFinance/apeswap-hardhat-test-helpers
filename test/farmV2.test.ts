@@ -21,6 +21,10 @@ import { ethers } from 'hardhat'
 import { MasterApeAdminV2__factory } from '../typechain-types'
 import { deployMockTokens } from '../src/token'
 
+function delay(time: number) {
+  return new Promise((resolve) => setTimeout(resolve, time))
+}
+
 describe('MasterApeV2', function () {
   // We define a fixture to reuse the same setup in every test.
   // We use loadFixture to run this setup once, snapshot that state,
@@ -87,8 +91,4 @@ describe('MasterApeV2', function () {
     )
     expect(Number(afterBalance)).to.be.gt(Number(beforeBalance))
   })
-
-  function delay(time: number) {
-    return new Promise((resolve) => setTimeout(resolve, time))
-  }
 })

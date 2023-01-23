@@ -59,12 +59,12 @@ export async function deployMockFarmV2(
       bananaPerBlock,
     }
   )
-  const { mockWBNB, mockTokens: mockTokensV1 } = await deployMockTokens(ethers, [owner], {
-    numTokens: 1,
+  const { mockWBNB, mockTokens } = await deployMockTokens(ethers, [owner], {
+    numTokens,
     tokenBaseBalance: ether('1'),
   })
-  const poolIdsV1 = await addPoolsToFarmV1([owner], masterApe, mockTokensV1, { allocations: [1]});
-  const masterToken = mockTokensV1[0];
+  const poolIdsV1 = await addPoolsToFarmV1([owner], masterApe, mockTokens);
+  const masterToken = mockTokens[0];
   const masterPid = poolIdsV1[masterToken.address];
   /**
    * Deploy MasterApeV2 Farm
@@ -83,7 +83,7 @@ export async function deployMockFarmV2(
 
   await masterApe.transferOwnership(masterApeV2.address)
   
-  return { bananaToken, masterApe, masterApeV2 }
+  return { bananaToken, masterApe, masterApeV2, masterToken, masterPid, mockWBNB, mockTokens }
 }
 
 /**
