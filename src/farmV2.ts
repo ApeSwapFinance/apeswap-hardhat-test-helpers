@@ -21,7 +21,9 @@ import { deployMockTokens } from './token'
 /**
  * Get MasterApeV2 and MasterApeAdminV2 hardhat contract factories
  */
-export async function getMasterApeV2_ContractFactories(ethers: HardhatEthersHelpers) {
+export async function getMasterApeV2_ContractFactories(
+  ethers: HardhatEthersHelpers
+) {
   const MasterApeV2_Factory = (await ethers.getContractFactory(
     MasterApeV2Build.abi,
     MasterApeV2Build.bytecode
@@ -47,7 +49,8 @@ export async function deployMockFarmV2(
     numTokens = 3,
   }
 ) {
-  const { MasterApeV2_Factory, MasterApeAdminV2_factory } = await getMasterApeV2_ContractFactories(ethers);
+  const { MasterApeV2_Factory, MasterApeAdminV2_factory } =
+    await getMasterApeV2_ContractFactories(ethers)
   /**
    * Deploy MasterApeV1 Farm
    */
@@ -63,9 +66,9 @@ export async function deployMockFarmV2(
     numTokens,
     tokenBaseBalance: ether('1'),
   })
-  const poolIdsV1 = await addPoolsToFarmV1([owner], masterApe, mockTokens);
-  const masterToken = mockTokens[0];
-  const masterPid = poolIdsV1[masterToken.address];
+  const poolIdsV1 = await addPoolsToFarmV1([owner], masterApe, mockTokens)
+  const masterToken = mockTokens[0]
+  const masterPid = poolIdsV1[masterToken.address]
   /**
    * Deploy MasterApeV2 Farm
    */
@@ -73,17 +76,29 @@ export async function deployMockFarmV2(
     bananaToken.address,
     masterApe.address,
     masterPid, // MasterPid
-    0, // Starting bananaPerSecond at 0
+    0 // Starting bananaPerSecond at 0
   )
   // Finalize setup
-  await masterToken.connect(owner).approve(masterApeV2.address, ether('1000000'))
-  await masterApeV2.connect(owner).initialize();
+  await masterToken
+    .connect(owner)
+    .approve(masterApeV2.address, ether('1000000'))
+  await masterApeV2.connect(owner).initialize()
   await masterApeV2.connect(owner).setFeeAddress(feeTo.address)
-  await masterApeV2.connect(owner).updateEmissionRate(bananaPerSecond, true);
+  await masterApeV2.connect(owner).updateEmissionRate(bananaPerSecond, true)
+  await masterApeV2
+    .connect(owner)
+    .set(0, 100, false, 0, '0x0000000000000000000000000000000000000000')
 
   await masterApe.transferOwnership(masterApeV2.address)
-  
-  return { bananaToken, masterApe, masterApeV2, masterToken, masterPid, mockWBNB, mockTokens }
+
+  return {
+    bananaToken,
+    masterApe,
+    masterApeV2,
+    masterToken,
+    masterPid,
+    mockTokens,
+  }
 }
 
 /**
@@ -103,7 +118,7 @@ export async function addPoolsToFarm(
   const DEFAULT_DEPOSIT_FEE = 0
   const DEFAULT_REWARDER = ADDRESS_0
   const poolIds: Record<string, number> = {}
-  let nextPid = (await masterApeV2.poolLength()).toNumber();
+  let nextPid = (await masterApeV2.poolLength()).toNumber()
   for (let index = 0; index < dexPairs.length; index++) {
     const pair = dexPairs[index]
     const allocation = options?.allocations
@@ -117,9 +132,9 @@ export async function addPoolsToFarm(
       : DEFAULT_REWARDER
     await masterApeV2
       .connect(owner)
-      .add(allocation, pair.address, false, depositFee, rewarder);
-    poolIds[pair.address] = nextPid;
-    nextPid++;
+      .add(allocation, pair.address, false, depositFee, rewarder)
+    poolIds[pair.address] = nextPid
+    nextPid++
   }
-  return poolIds;
+  return poolIds
 }
