@@ -1,0 +1,1110 @@
+{
+  "contractName": "MasterApeAdminV2",
+  "abi": [
+    {
+      "inputs": [
+        {
+          "internalType": "contract IMasterApeV2",
+          "name": "_masterApeV2",
+          "type": "address"
+        },
+        {
+          "internalType": "address",
+          "name": "_farmAdmin",
+          "type": "address"
+        }
+      ],
+      "stateMutability": "nonpayable",
+      "type": "constructor"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": true,
+          "internalType": "contract IERC20",
+          "name": "lpToken",
+          "type": "address"
+        },
+        {
+          "indexed": false,
+          "internalType": "uint256",
+          "name": "allocation",
+          "type": "uint256"
+        },
+        {
+          "indexed": false,
+          "internalType": "uint16",
+          "name": "depositFeeBP",
+          "type": "uint16"
+        },
+        {
+          "indexed": true,
+          "internalType": "contract IRewarderV2",
+          "name": "rewarder",
+          "type": "address"
+        }
+      ],
+      "name": "AddFarm",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": true,
+          "internalType": "uint256",
+          "name": "pid",
+          "type": "uint256"
+        },
+        {
+          "indexed": false,
+          "internalType": "uint256",
+          "name": "allocationPercentage",
+          "type": "uint256"
+        }
+      ],
+      "name": "AddFixedPercentFarm",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": true,
+          "internalType": "address",
+          "name": "previousOwner",
+          "type": "address"
+        },
+        {
+          "indexed": true,
+          "internalType": "address",
+          "name": "newOwner",
+          "type": "address"
+        }
+      ],
+      "name": "OwnershipTransferred",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": true,
+          "internalType": "uint256",
+          "name": "pid",
+          "type": "uint256"
+        },
+        {
+          "indexed": false,
+          "internalType": "uint256",
+          "name": "allocation",
+          "type": "uint256"
+        },
+        {
+          "indexed": false,
+          "internalType": "uint16",
+          "name": "depositFeeBP",
+          "type": "uint16"
+        },
+        {
+          "indexed": true,
+          "internalType": "contract IRewarderV2",
+          "name": "rewarder",
+          "type": "address"
+        }
+      ],
+      "name": "SetFarm",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": true,
+          "internalType": "uint256",
+          "name": "pid",
+          "type": "uint256"
+        },
+        {
+          "indexed": false,
+          "internalType": "uint256",
+          "name": "previousAllocationPercentage",
+          "type": "uint256"
+        },
+        {
+          "indexed": false,
+          "internalType": "uint256",
+          "name": "allocationPercentage",
+          "type": "uint256"
+        }
+      ],
+      "name": "SetFixedPercentFarm",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": false,
+          "internalType": "address",
+          "name": "pendingMasterApeOV2wner",
+          "type": "address"
+        }
+      ],
+      "name": "SetPendingMasterApeV2Owner",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": true,
+          "internalType": "address",
+          "name": "to",
+          "type": "address"
+        },
+        {
+          "indexed": true,
+          "internalType": "contract IERC20",
+          "name": "token",
+          "type": "address"
+        },
+        {
+          "indexed": false,
+          "internalType": "uint256",
+          "name": "amount",
+          "type": "uint256"
+        }
+      ],
+      "name": "SweepWithdraw",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": true,
+          "internalType": "uint256",
+          "name": "pid",
+          "type": "uint256"
+        },
+        {
+          "indexed": false,
+          "internalType": "uint256",
+          "name": "allocation",
+          "type": "uint256"
+        }
+      ],
+      "name": "SyncFixedPercentFarm",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": true,
+          "internalType": "address",
+          "name": "previousFarmAdmin",
+          "type": "address"
+        },
+        {
+          "indexed": true,
+          "internalType": "address",
+          "name": "newFarmAdmin",
+          "type": "address"
+        }
+      ],
+      "name": "TransferredFarmAdmin",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": true,
+          "internalType": "address",
+          "name": "whitelistAddress",
+          "type": "address"
+        },
+        {
+          "indexed": false,
+          "internalType": "bool",
+          "name": "whitelistEnabled",
+          "type": "bool"
+        }
+      ],
+      "name": "UpdateContractWhitelist",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": false,
+          "internalType": "bool",
+          "name": "whitelistEnabled",
+          "type": "bool"
+        }
+      ],
+      "name": "UpdateWhitelistStatus",
+      "type": "event"
+    },
+    {
+      "inputs": [],
+      "name": "MAX_FIXED_FARM_PERCENTAGE",
+      "outputs": [
+        {
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "MAX_FIXED_FARM_PERCENTAGE_BUFFER",
+      "outputs": [
+        {
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "PERCENTAGE_PRECISION",
+      "outputs": [
+        {
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "farmAdmin",
+      "outputs": [
+        {
+          "internalType": "address",
+          "name": "",
+          "type": "address"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "name": "fixedPercentFarmPids",
+      "outputs": [
+        {
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "name": "getFixedPercentFarmFromPid",
+      "outputs": [
+        {
+          "internalType": "uint256",
+          "name": "pid",
+          "type": "uint256"
+        },
+        {
+          "internalType": "uint256",
+          "name": "allocationPercent",
+          "type": "uint256"
+        },
+        {
+          "internalType": "bool",
+          "name": "isActive",
+          "type": "bool"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "uint256",
+          "name": "_index",
+          "type": "uint256"
+        }
+      ],
+      "name": "getWhitelistAtIndex",
+      "outputs": [
+        {
+          "internalType": "address",
+          "name": "",
+          "type": "address"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "getWhitelistLength",
+      "outputs": [
+        {
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "_address",
+          "type": "address"
+        }
+      ],
+      "name": "isWhitelisted",
+      "outputs": [
+        {
+          "internalType": "bool",
+          "name": "",
+          "type": "bool"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "masterApeV2",
+      "outputs": [
+        {
+          "internalType": "contract IMasterApeV2",
+          "name": "",
+          "type": "address"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "owner",
+      "outputs": [
+        {
+          "internalType": "address",
+          "name": "",
+          "type": "address"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "pendingMasterApeV2Owner",
+      "outputs": [
+        {
+          "internalType": "address",
+          "name": "",
+          "type": "address"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "renounceOwnership",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address[]",
+          "name": "_addresses",
+          "type": "address[]"
+        },
+        {
+          "internalType": "bool[]",
+          "name": "_enabled",
+          "type": "bool[]"
+        }
+      ],
+      "name": "setBatchContractWhitelist",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "_address",
+          "type": "address"
+        },
+        {
+          "internalType": "bool",
+          "name": "_enabled",
+          "type": "bool"
+        }
+      ],
+      "name": "setContractWhitelist",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "totalFixedPercentFarmPercentage",
+      "outputs": [
+        {
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "newOwner",
+          "type": "address"
+        }
+      ],
+      "name": "transferOwnership",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "whitelistEnabled",
+      "outputs": [
+        {
+          "internalType": "bool",
+          "name": "",
+          "type": "bool"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "_pendingMasterApeV2Owner",
+          "type": "address"
+        }
+      ],
+      "name": "setPendingMasterApeV2Owner",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "acceptMasterApeV2Ownership",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "_pendingMasterApeV1Owner",
+          "type": "address"
+        }
+      ],
+      "name": "setPendingMasterApeV1Owner",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "uint256[]",
+          "name": "pids",
+          "type": "uint256[]"
+        }
+      ],
+      "name": "batchUpdateMasterApePools",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "uint256",
+          "name": "_bananaPerSecond",
+          "type": "uint256"
+        },
+        {
+          "internalType": "bool",
+          "name": "_withUpdate",
+          "type": "bool"
+        }
+      ],
+      "name": "updateEmissionRate",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "uint256",
+          "name": "_hardCap",
+          "type": "uint256"
+        }
+      ],
+      "name": "updateHardCap",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "bool",
+          "name": "_enabled",
+          "type": "bool"
+        }
+      ],
+      "name": "setWhitelistEnabled",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "contract IERC20[]",
+          "name": "_tokens",
+          "type": "address[]"
+        },
+        {
+          "internalType": "address",
+          "name": "_to",
+          "type": "address"
+        }
+      ],
+      "name": "sweepTokens",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "_newFarmAdmin",
+          "type": "address"
+        }
+      ],
+      "name": "transferFarmAdminOwnership",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "syncFixedPercentFarms",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "uint256[]",
+          "name": "_allocPoints",
+          "type": "uint256[]"
+        },
+        {
+          "internalType": "contract IERC20[]",
+          "name": "_stakeTokens",
+          "type": "address[]"
+        },
+        {
+          "internalType": "uint16[]",
+          "name": "_depositFeesBP",
+          "type": "uint16[]"
+        },
+        {
+          "internalType": "contract IRewarderV2[]",
+          "name": "_rewarders",
+          "type": "address[]"
+        },
+        {
+          "internalType": "bool",
+          "name": "_withMassPoolUpdate",
+          "type": "bool"
+        },
+        {
+          "internalType": "bool",
+          "name": "_syncFixedPercentageFarms",
+          "type": "bool"
+        }
+      ],
+      "name": "addMasterApeFarms",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "uint256[]",
+          "name": "_pids",
+          "type": "uint256[]"
+        },
+        {
+          "internalType": "uint256[]",
+          "name": "_allocPoints",
+          "type": "uint256[]"
+        },
+        {
+          "internalType": "uint16[]",
+          "name": "_depositFeesBP",
+          "type": "uint16[]"
+        },
+        {
+          "internalType": "contract IRewarderV2[]",
+          "name": "_rewarders",
+          "type": "address[]"
+        },
+        {
+          "internalType": "bool",
+          "name": "_withMassPoolUpdate",
+          "type": "bool"
+        },
+        {
+          "internalType": "bool",
+          "name": "_syncFixedPercentageFarms",
+          "type": "bool"
+        }
+      ],
+      "name": "setMasterApeFarms",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "uint256",
+          "name": "_pid",
+          "type": "uint256"
+        },
+        {
+          "internalType": "uint256",
+          "name": "_allocPercentage",
+          "type": "uint256"
+        },
+        {
+          "internalType": "bool",
+          "name": "_withMassPoolUpdate",
+          "type": "bool"
+        },
+        {
+          "internalType": "bool",
+          "name": "_syncFixedPercentageFarms",
+          "type": "bool"
+        }
+      ],
+      "name": "addFixedPercentFarmAllocation",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "uint256",
+          "name": "_pid",
+          "type": "uint256"
+        },
+        {
+          "internalType": "uint256",
+          "name": "_allocPercentage",
+          "type": "uint256"
+        },
+        {
+          "internalType": "bool",
+          "name": "_withMassPoolUpdate",
+          "type": "bool"
+        },
+        {
+          "internalType": "bool",
+          "name": "_syncFixedPercentageFarms",
+          "type": "bool"
+        }
+      ],
+      "name": "setFixedPercentFarmAllocation",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "uint256",
+          "name": "pid",
+          "type": "uint256"
+        }
+      ],
+      "name": "getDetailedPoolInfo",
+      "outputs": [
+        {
+          "internalType": "address",
+          "name": "lpToken",
+          "type": "address"
+        },
+        {
+          "internalType": "uint256",
+          "name": "poolAllocationPoint",
+          "type": "uint256"
+        },
+        {
+          "internalType": "uint256",
+          "name": "totalAllocationPoints",
+          "type": "uint256"
+        },
+        {
+          "internalType": "uint256",
+          "name": "poolAllocationPercentMantissa",
+          "type": "uint256"
+        },
+        {
+          "internalType": "uint256",
+          "name": "poolBananaPerSecond",
+          "type": "uint256"
+        },
+        {
+          "internalType": "uint256",
+          "name": "poolBananaPerDay",
+          "type": "uint256"
+        },
+        {
+          "internalType": "uint256",
+          "name": "poolBananaPerMonth",
+          "type": "uint256"
+        },
+        {
+          "internalType": "uint16",
+          "name": "depositFeeBP",
+          "type": "uint16"
+        },
+        {
+          "internalType": "contract IRewarderV2",
+          "name": "rewarder",
+          "type": "address"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "getNumberOfFixedPercentFarms",
+      "outputs": [
+        {
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    }
+  ],
+  "metadata": "{\"compiler\":{\"version\":\"0.8.17+commit.8df45f5f\"},\"language\":\"Solidity\",\"output\":{\"abi\":[{\"inputs\":[{\"internalType\":\"contract IMasterApeV2\",\"name\":\"_masterApeV2\",\"type\":\"address\"},{\"internalType\":\"address\",\"name\":\"_farmAdmin\",\"type\":\"address\"}],\"stateMutability\":\"nonpayable\",\"type\":\"constructor\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"internalType\":\"contract IERC20\",\"name\":\"lpToken\",\"type\":\"address\"},{\"indexed\":false,\"internalType\":\"uint256\",\"name\":\"allocation\",\"type\":\"uint256\"},{\"indexed\":false,\"internalType\":\"uint16\",\"name\":\"depositFeeBP\",\"type\":\"uint16\"},{\"indexed\":true,\"internalType\":\"contract IRewarderV2\",\"name\":\"rewarder\",\"type\":\"address\"}],\"name\":\"AddFarm\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"internalType\":\"uint256\",\"name\":\"pid\",\"type\":\"uint256\"},{\"indexed\":false,\"internalType\":\"uint256\",\"name\":\"allocationPercentage\",\"type\":\"uint256\"}],\"name\":\"AddFixedPercentFarm\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"internalType\":\"address\",\"name\":\"previousOwner\",\"type\":\"address\"},{\"indexed\":true,\"internalType\":\"address\",\"name\":\"newOwner\",\"type\":\"address\"}],\"name\":\"OwnershipTransferred\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"internalType\":\"uint256\",\"name\":\"pid\",\"type\":\"uint256\"},{\"indexed\":false,\"internalType\":\"uint256\",\"name\":\"allocation\",\"type\":\"uint256\"},{\"indexed\":false,\"internalType\":\"uint16\",\"name\":\"depositFeeBP\",\"type\":\"uint16\"},{\"indexed\":true,\"internalType\":\"contract IRewarderV2\",\"name\":\"rewarder\",\"type\":\"address\"}],\"name\":\"SetFarm\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"internalType\":\"uint256\",\"name\":\"pid\",\"type\":\"uint256\"},{\"indexed\":false,\"internalType\":\"uint256\",\"name\":\"previousAllocationPercentage\",\"type\":\"uint256\"},{\"indexed\":false,\"internalType\":\"uint256\",\"name\":\"allocationPercentage\",\"type\":\"uint256\"}],\"name\":\"SetFixedPercentFarm\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":false,\"internalType\":\"address\",\"name\":\"pendingMasterApeOV2wner\",\"type\":\"address\"}],\"name\":\"SetPendingMasterApeV2Owner\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"internalType\":\"address\",\"name\":\"to\",\"type\":\"address\"},{\"indexed\":true,\"internalType\":\"contract IERC20\",\"name\":\"token\",\"type\":\"address\"},{\"indexed\":false,\"internalType\":\"uint256\",\"name\":\"amount\",\"type\":\"uint256\"}],\"name\":\"SweepWithdraw\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"internalType\":\"uint256\",\"name\":\"pid\",\"type\":\"uint256\"},{\"indexed\":false,\"internalType\":\"uint256\",\"name\":\"allocation\",\"type\":\"uint256\"}],\"name\":\"SyncFixedPercentFarm\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"internalType\":\"address\",\"name\":\"previousFarmAdmin\",\"type\":\"address\"},{\"indexed\":true,\"internalType\":\"address\",\"name\":\"newFarmAdmin\",\"type\":\"address\"}],\"name\":\"TransferredFarmAdmin\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"internalType\":\"address\",\"name\":\"whitelistAddress\",\"type\":\"address\"},{\"indexed\":false,\"internalType\":\"bool\",\"name\":\"whitelistEnabled\",\"type\":\"bool\"}],\"name\":\"UpdateContractWhitelist\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":false,\"internalType\":\"bool\",\"name\":\"whitelistEnabled\",\"type\":\"bool\"}],\"name\":\"UpdateWhitelistStatus\",\"type\":\"event\"},{\"inputs\":[],\"name\":\"MAX_FIXED_FARM_PERCENTAGE\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"MAX_FIXED_FARM_PERCENTAGE_BUFFER\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"PERCENTAGE_PRECISION\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"acceptMasterApeV2Ownership\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint256\",\"name\":\"_pid\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"_allocPercentage\",\"type\":\"uint256\"},{\"internalType\":\"bool\",\"name\":\"_withMassPoolUpdate\",\"type\":\"bool\"},{\"internalType\":\"bool\",\"name\":\"_syncFixedPercentageFarms\",\"type\":\"bool\"}],\"name\":\"addFixedPercentFarmAllocation\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint256[]\",\"name\":\"_allocPoints\",\"type\":\"uint256[]\"},{\"internalType\":\"contract IERC20[]\",\"name\":\"_stakeTokens\",\"type\":\"address[]\"},{\"internalType\":\"uint16[]\",\"name\":\"_depositFeesBP\",\"type\":\"uint16[]\"},{\"internalType\":\"contract IRewarderV2[]\",\"name\":\"_rewarders\",\"type\":\"address[]\"},{\"internalType\":\"bool\",\"name\":\"_withMassPoolUpdate\",\"type\":\"bool\"},{\"internalType\":\"bool\",\"name\":\"_syncFixedPercentageFarms\",\"type\":\"bool\"}],\"name\":\"addMasterApeFarms\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint256[]\",\"name\":\"pids\",\"type\":\"uint256[]\"}],\"name\":\"batchUpdateMasterApePools\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"farmAdmin\",\"outputs\":[{\"internalType\":\"address\",\"name\":\"\",\"type\":\"address\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"name\":\"fixedPercentFarmPids\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint256\",\"name\":\"pid\",\"type\":\"uint256\"}],\"name\":\"getDetailedPoolInfo\",\"outputs\":[{\"internalType\":\"address\",\"name\":\"lpToken\",\"type\":\"address\"},{\"internalType\":\"uint256\",\"name\":\"poolAllocationPoint\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"totalAllocationPoints\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"poolAllocationPercentMantissa\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"poolBananaPerSecond\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"poolBananaPerDay\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"poolBananaPerMonth\",\"type\":\"uint256\"},{\"internalType\":\"uint16\",\"name\":\"depositFeeBP\",\"type\":\"uint16\"},{\"internalType\":\"contract IRewarderV2\",\"name\":\"rewarder\",\"type\":\"address\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"name\":\"getFixedPercentFarmFromPid\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"pid\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"allocationPercent\",\"type\":\"uint256\"},{\"internalType\":\"bool\",\"name\":\"isActive\",\"type\":\"bool\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"getNumberOfFixedPercentFarms\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint256\",\"name\":\"_index\",\"type\":\"uint256\"}],\"name\":\"getWhitelistAtIndex\",\"outputs\":[{\"internalType\":\"address\",\"name\":\"\",\"type\":\"address\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"getWhitelistLength\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"_address\",\"type\":\"address\"}],\"name\":\"isWhitelisted\",\"outputs\":[{\"internalType\":\"bool\",\"name\":\"\",\"type\":\"bool\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"masterApeV2\",\"outputs\":[{\"internalType\":\"contract IMasterApeV2\",\"name\":\"\",\"type\":\"address\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"owner\",\"outputs\":[{\"internalType\":\"address\",\"name\":\"\",\"type\":\"address\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"pendingMasterApeV2Owner\",\"outputs\":[{\"internalType\":\"address\",\"name\":\"\",\"type\":\"address\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"renounceOwnership\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address[]\",\"name\":\"_addresses\",\"type\":\"address[]\"},{\"internalType\":\"bool[]\",\"name\":\"_enabled\",\"type\":\"bool[]\"}],\"name\":\"setBatchContractWhitelist\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"_address\",\"type\":\"address\"},{\"internalType\":\"bool\",\"name\":\"_enabled\",\"type\":\"bool\"}],\"name\":\"setContractWhitelist\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint256\",\"name\":\"_pid\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"_allocPercentage\",\"type\":\"uint256\"},{\"internalType\":\"bool\",\"name\":\"_withMassPoolUpdate\",\"type\":\"bool\"},{\"internalType\":\"bool\",\"name\":\"_syncFixedPercentageFarms\",\"type\":\"bool\"}],\"name\":\"setFixedPercentFarmAllocation\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint256[]\",\"name\":\"_pids\",\"type\":\"uint256[]\"},{\"internalType\":\"uint256[]\",\"name\":\"_allocPoints\",\"type\":\"uint256[]\"},{\"internalType\":\"uint16[]\",\"name\":\"_depositFeesBP\",\"type\":\"uint16[]\"},{\"internalType\":\"contract IRewarderV2[]\",\"name\":\"_rewarders\",\"type\":\"address[]\"},{\"internalType\":\"bool\",\"name\":\"_withMassPoolUpdate\",\"type\":\"bool\"},{\"internalType\":\"bool\",\"name\":\"_syncFixedPercentageFarms\",\"type\":\"bool\"}],\"name\":\"setMasterApeFarms\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"_pendingMasterApeV1Owner\",\"type\":\"address\"}],\"name\":\"setPendingMasterApeV1Owner\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"_pendingMasterApeV2Owner\",\"type\":\"address\"}],\"name\":\"setPendingMasterApeV2Owner\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"bool\",\"name\":\"_enabled\",\"type\":\"bool\"}],\"name\":\"setWhitelistEnabled\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"contract IERC20[]\",\"name\":\"_tokens\",\"type\":\"address[]\"},{\"internalType\":\"address\",\"name\":\"_to\",\"type\":\"address\"}],\"name\":\"sweepTokens\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"syncFixedPercentFarms\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"totalFixedPercentFarmPercentage\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"_newFarmAdmin\",\"type\":\"address\"}],\"name\":\"transferFarmAdminOwnership\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"newOwner\",\"type\":\"address\"}],\"name\":\"transferOwnership\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint256\",\"name\":\"_bananaPerSecond\",\"type\":\"uint256\"},{\"internalType\":\"bool\",\"name\":\"_withUpdate\",\"type\":\"bool\"}],\"name\":\"updateEmissionRate\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint256\",\"name\":\"_hardCap\",\"type\":\"uint256\"}],\"name\":\"updateHardCap\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"whitelistEnabled\",\"outputs\":[{\"internalType\":\"bool\",\"name\":\"\",\"type\":\"bool\"}],\"stateMutability\":\"view\",\"type\":\"function\"}],\"devdoc\":{\"details\":\"This contract does NOT handle changing the dev address of the MasterApeV2 because that can only be done  by the dev address itself\",\"kind\":\"dev\",\"methods\":{\"acceptMasterApeV2Ownership()\":{\"details\":\"Transferring MasterApeV2 ownership away from this contract renders this contract useless.\"},\"addFixedPercentFarmAllocation(uint256,uint256,bool,bool)\":{\"details\":\"Must be a new MasterApeV2 pid and below the max fixed percentage\",\"params\":{\"_allocPercentage\":\"Percentage based in PERCENTAGE_PRECISION\",\"_pid\":\"MasterApeV2 pid to create a fixed percentage farm for\",\"_syncFixedPercentageFarms\":\"Sync fixed percentage farm allocations\",\"_withMassPoolUpdate\":\"Mass update pools before update\"}},\"addMasterApeFarms(uint256[],address[],uint16[],address[],bool,bool)\":{\"details\":\"syncs fixed percentage farms after update\",\"params\":{\"_allocPoints\":\"Array of allocation points to set each address\",\"_depositFeesBP\":\"Array of deposit fee basis points\",\"_rewarders\":\"Array of rewarders can be address(0) for no rewarder\",\"_stakeTokens\":\"Array of stake tokens\",\"_syncFixedPercentageFarms\":\"Sync fixed percentage farm allocations\",\"_withMassPoolUpdate\":\"Mass update pools before update\"}},\"batchUpdateMasterApePools(uint256[])\":{\"details\":\"The MasterApeV2 massUpdatePools function uses a for loop which in the future  could reach the block gas limit making it in-callable.\",\"params\":{\"pids\":\"Array of MasterApeV2 pids to update\"}},\"getDetailedPoolInfo(uint256)\":{\"params\":{\"pid\":\"MasterApeV2 pid to pull detailed information from\"},\"returns\":{\"lpToken\":\"Address of the stake token for this pool\",\"poolAllocationPercentMantissa\":\"Percentage of pool allocation points to total multiplied by 1e18\",\"poolAllocationPoint\":\"Allocation points for this pool\",\"poolBananaPerDay\":\"Amount of BANANA given to the pool per day\",\"poolBananaPerMonth\":\"Amount of BANANA given to the pool per month\",\"poolBananaPerSecond\":\"Amount of BANANA given to the pool per second\",\"totalAllocationPoints\":\"Total allocation points across all pools\"}},\"getNumberOfFixedPercentFarms()\":{\"returns\":{\"_0\":\"Number of active fixed percentage farms\"}},\"getWhitelistAtIndex(uint256)\":{\"params\":{\"_index\":\"Index to query\"}},\"isWhitelisted(address)\":{\"params\":{\"_address\":\"Address to query\"}},\"owner()\":{\"details\":\"Returns the address of the current owner.\"},\"renounceOwnership()\":{\"details\":\"Leaves the contract without owner. It will not be possible to call `onlyOwner` functions anymore. Can only be called by the current owner. NOTE: Renouncing ownership will leave the contract without an owner, thereby removing any functionality that is only available to the owner.\"},\"setBatchContractWhitelist(address[],bool[])\":{\"params\":{\"_addresses\":\"Addressed to update on whitelist\",\"_enabled\":\"Set if the whitelist is enabled or disabled for each address passed\"}},\"setContractWhitelist(address,bool)\":{\"params\":{\"_address\":\"Address to update on whitelist\",\"_enabled\":\"Set if the whitelist is enabled or disabled\"}},\"setFixedPercentFarmAllocation(uint256,uint256,bool,bool)\":{\"details\":\"If the farm allocation is 0, then the fixed farm will be disabled, but the allocation will be unchanged.\",\"params\":{\"_allocPercentage\":\"Percentage based in PERCENTAGE_PRECISION\",\"_pid\":\"MasterApeV2 pid linked to fixed percentage farm to update\",\"_syncFixedPercentageFarms\":\"Sync fixed percentage farm allocations\",\"_withMassPoolUpdate\":\"Mass update pools before update\"}},\"setMasterApeFarms(uint256[],uint256[],uint16[],address[],bool,bool)\":{\"details\":\"syncs fixed percentage farms after update\",\"params\":{\"_allocPoints\":\"Array of allocation points to set each pid\",\"_depositFeesBP\":\"Array of deposit fees for each pid. Pass an empty array to leave the same value.\",\"_pids\":\"Array of MasterApeV2 pool ids to update\",\"_rewarders\":\"Array of rewarders to set for each pid. Pass an empty array to leave the same value.\",\"_syncFixedPercentageFarms\":\"Sync fixed percentage farm allocations\",\"_withMassPoolUpdate\":\"Mass update pools before update\"}},\"setPendingMasterApeV1Owner(address)\":{\"params\":{\"_pendingMasterApeV1Owner\":\"Address to set as the pending owner of the MasterApeV2.\"}},\"setPendingMasterApeV2Owner(address)\":{\"params\":{\"_pendingMasterApeV2Owner\":\"Address to set as the pending owner of the MasterApeV2.\"}},\"sweepTokens(address[],address)\":{\"params\":{\"_to\":\"Address to send tokens to\",\"_tokens\":\"Array of ERC20 addresses to sweep\"}},\"transferFarmAdminOwnership(address)\":{\"params\":{\"_newFarmAdmin\":\"Address of new farmAdmin\"}},\"transferOwnership(address)\":{\"details\":\"Transfers ownership of the contract to a new account (`newOwner`). Can only be called by the current owner.\"},\"updateEmissionRate(uint256,bool)\":{\"params\":{\"_bananaPerSecond\":\"how many BANANAs to mint per second\",\"_withUpdate\":\"flag to call massUpdatePool before update\"}},\"updateHardCap(uint256)\":{\"params\":{\"_hardCap\":\"new BANANA hard cap\"}}},\"title\":\"Admin MasterApeV2 proxy contract used to add features to MasterApeV2 admin functions\",\"version\":1},\"userdoc\":{\"kind\":\"user\",\"methods\":{\"MAX_FIXED_FARM_PERCENTAGE()\":{\"notice\":\"Percentage available to additional fixed percent farms\"},\"MAX_FIXED_FARM_PERCENTAGE_BUFFER()\":{\"notice\":\"Approaching max fixed farm percentage makes the fixed farm allocations go to infinity\"},\"PERCENTAGE_PRECISION()\":{\"notice\":\"The percentages are divided by 10000\"},\"acceptMasterApeV2Ownership()\":{\"notice\":\"The pendingMasterApeOwner takes ownership through this call\"},\"addFixedPercentFarmAllocation(uint256,uint256,bool,bool)\":{\"notice\":\"Add a new fixed percentage farm allocation\"},\"addMasterApeFarms(uint256[],address[],uint16[],address[],bool,bool)\":{\"notice\":\"Add a batch of farms to the MasterApeV2 contract\"},\"batchUpdateMasterApePools(uint256[])\":{\"notice\":\"Helper function to update MasterApeV2 pools in batches\"},\"farmAdmin()\":{\"notice\":\"Farm admin can manage master ape farms and fixed percent farms\"},\"fixedPercentFarmPids(uint256)\":{\"notice\":\"Array of MasterApeV2 pids that are active fixed percent farms\"},\"getDetailedPoolInfo(uint256)\":{\"notice\":\"Obtain detailed allocation information regarding a MasterApeV2 pool\"},\"getFixedPercentFarmFromPid(uint256)\":{\"notice\":\"mapping of MasterApeV2 pids to FixedPercentFarmInfo\"},\"getNumberOfFixedPercentFarms()\":{\"notice\":\"Get the number of registered fixed percentage farms\"},\"getWhitelistAtIndex(uint256)\":{\"notice\":\"Find the address on the whitelist of the provided index\"},\"getWhitelistLength()\":{\"notice\":\"Get the number of addresses on the whitelist\"},\"isWhitelisted(address)\":{\"notice\":\"Check if an address is whitelisted\"},\"masterApeV2()\":{\"notice\":\"MasterApeV2 Address\"},\"pendingMasterApeV2Owner()\":{\"notice\":\"Address which is eligible to accept ownership of the MasterApeV2. Set by the current owner.\"},\"setBatchContractWhitelist(address[],bool[])\":{\"notice\":\"Enable or disable contract addresses on the whitelist\"},\"setContractWhitelist(address,bool)\":{\"notice\":\"Enable or disable a contract address on the whitelist\"},\"setFixedPercentFarmAllocation(uint256,uint256,bool,bool)\":{\"notice\":\"Update/disable a new fixed percentage farm allocation\"},\"setMasterApeFarms(uint256[],uint256[],uint16[],address[],bool,bool)\":{\"notice\":\"Set a batch of farms to the MasterApeV2 contract\"},\"setPendingMasterApeV1Owner(address)\":{\"notice\":\"Set an address as the pending admin of the MasterApeV1. The address must accept to take ownership.\"},\"setPendingMasterApeV2Owner(address)\":{\"notice\":\"Set an address as the pending admin of the MasterApeV2. The address must accept to take ownership.\"},\"setWhitelistEnabled(bool)\":{\"notice\":\"enables smart contract whitelist on MAv2.\"},\"sweepTokens(address[],address)\":{\"notice\":\"An external function to sweep accidental ERC20 transfers to this contract.   Tokens are sent to owner\"},\"syncFixedPercentFarms()\":{\"notice\":\"Update pool allocations based on fixed percentage farm percentages\"},\"totalFixedPercentFarmPercentage()\":{\"notice\":\"Total allocation percentage for fixed percent farms\"},\"transferFarmAdminOwnership(address)\":{\"notice\":\"Transfer the farmAdmin to a new address\"},\"updateEmissionRate(uint256,bool)\":{\"notice\":\"An external function to update MAv2 Emission rate.\"},\"updateHardCap(uint256)\":{\"notice\":\"An external function to update the BANANA hard cap.\"},\"whitelistEnabled()\":{\"notice\":\"marks if a contract whitelist is enabled.\"}},\"notice\":\"Admin functions are separated into onlyOwner and onlyFarmAdmin to separate concerns\",\"version\":1}},\"settings\":{\"compilationTarget\":{\"project:/contracts/MasterApeAdminV2.sol\":\"MasterApeAdminV2\"},\"evmVersion\":\"london\",\"libraries\":{},\"metadata\":{\"bytecodeHash\":\"ipfs\"},\"optimizer\":{\"enabled\":true,\"runs\":200},\"remappings\":[]},\"sources\":{\"@ape.swap/contracts/contracts/v0.8/access/ContractWhitelist.sol\":{\"keccak256\":\"0x8ab3e48968b0bd67a058fd113b595b212380f8c5af38cd0983660f27cd3469c3\",\"license\":\"GPL-3.0\",\"urls\":[\"bzz-raw://13d95870631dfe98989d6854aebb50f29f93868b659a5316fa3667cb2af1df1a\",\"dweb:/ipfs/QmQ3V5xQTVroncbeWYA8okZ1bzP9gvV84Pvne8xQuvuDY2\"]},\"@ape.swap/contracts/contracts/v0.8/interfaces/IContractWhitelist.sol\":{\"keccak256\":\"0x8ce74b401b9067125bedbb9e94f384ecb95f6181d8b91d30ad4fca27b92b4fc3\",\"license\":\"GPL-3.0\",\"urls\":[\"bzz-raw://c1cc6b9e8e5babcd58aac0b1a79a90fd4ebd0ede771eb819c337a93307652e33\",\"dweb:/ipfs/QmUbgyN13DASGnK38y17tVjhogv2bDPWCiFmsnW5PR7b1P\"]},\"@openzeppelin/contracts/access/Ownable.sol\":{\"keccak256\":\"0xa94b34880e3c1b0b931662cb1c09e5dfa6662f31cba80e07c5ee71cd135c9673\",\"license\":\"MIT\",\"urls\":[\"bzz-raw://40fb1b5102468f783961d0af743f91b9980cf66b50d1d12009f6bb1869cea4d2\",\"dweb:/ipfs/QmYqEbJML4jB1GHbzD4cUZDtJg5wVwNm3vDJq1GbyDus8y\"]},\"@openzeppelin/contracts/token/ERC20/IERC20.sol\":{\"keccak256\":\"0x9750c6b834f7b43000631af5cc30001c5f547b3ceb3635488f140f60e897ea6b\",\"license\":\"MIT\",\"urls\":[\"bzz-raw://5a7d5b1ef5d8d5889ad2ed89d8619c09383b80b72ab226e0fe7bde1636481e34\",\"dweb:/ipfs/QmebXWgtEfumQGBdVeM6c71McLixYXQP5Bk6kKXuoY4Bmr\"]},\"@openzeppelin/contracts/utils/Context.sol\":{\"keccak256\":\"0xe2e337e6dde9ef6b680e07338c493ebea1b5fd09b43424112868e9cc1706bca7\",\"license\":\"MIT\",\"urls\":[\"bzz-raw://6df0ddf21ce9f58271bdfaa85cde98b200ef242a05a3f85c2bc10a8294800a92\",\"dweb:/ipfs/QmRK2Y5Yc6BK7tGKkgsgn3aJEQGi5aakeSPZvS65PV8Xp3\"]},\"@openzeppelin/contracts/utils/structs/EnumerableSet.sol\":{\"keccak256\":\"0xc3ff3f5c4584e1d9a483ad7ced51ab64523201f4e3d3c65293e4ca8aeb77a961\",\"license\":\"MIT\",\"urls\":[\"bzz-raw://d7d3dd6067a994690471b5fc71b6f81fac3847798b37d404f74db00b4d3c3d0e\",\"dweb:/ipfs/QmRHF1RarifjNi93RttouNPkYZGyu6CD926PgRDzD5iL35\"]},\"project:/contracts/MasterApeAdminV2.sol\":{\"keccak256\":\"0x508777530bcec50c08d76f6a99d9629c756468f0c5160f77545aaea59e244fec\",\"license\":\"GPL-3.0\",\"urls\":[\"bzz-raw://2f7d974e826838a5f1f9734dbadc6d5c8f48c7d40141f2d523fd90e05a2627a6\",\"dweb:/ipfs/QmctSbnWB65F6SgPRWA3PtJeMVRTG9E13kVT3CBN2Cqnc4\"]},\"project:/contracts/interfaces/IMasterApeV2.sol\":{\"keccak256\":\"0x250d9f70d282047e1b7c2aa786fdeeb405929e597a2541a8497c00ea48e4532b\",\"license\":\"GPL-3.0\",\"urls\":[\"bzz-raw://c09b972cf896ed38d879faf4f6e448df9dc5c51b4a74f65310161f9811ddd1c6\",\"dweb:/ipfs/QmdmMCerkzm4QeYGjapQnZCi5CipG77NA7bAQACc1tgauy\"]},\"project:/contracts/interfaces/IOwnable.sol\":{\"keccak256\":\"0xe951687b9c2443690963e6fefd1eca6a95eb46b22bb1582e2ccd4211f8287d7a\",\"license\":\"GPL-3.0\",\"urls\":[\"bzz-raw://50edf69a2ff1a6565c026985fdf304101527a8ac9b1a0d9e42e8625b2b572cc9\",\"dweb:/ipfs/QmbEb1749jsRSyccDhe5siKc9FfDCRroJpgFtq4LYy7sy5\"]},\"project:/contracts/interfaces/IRewarderV2.sol\":{\"keccak256\":\"0x2d98bee00b2ec10ab817b3adda48e3f10bba4b87e6adc7518d0026d5e065c678\",\"license\":\"GPL-3.0\",\"urls\":[\"bzz-raw://a23b5522f32ef6c09c38ce37b5a40f35607531fc02559c802607cb4581585d50\",\"dweb:/ipfs/QmbTGac9AyZgEj7hZwWoNHaiWthziQJYF1V8eakLSsocSD\"]}},\"version\":1}",
+  "bytecode": "0x60a060405260006007553480156200001657600080fd5b5060405162002acc38038062002acc8339810160408190526200003991620000dd565b620000443362000074565b6001600160a01b03918216608052600380549190921661010002610100600160a81b03199091161790556200011c565b600080546001600160a01b038381166001600160a01b0319831681178455604051919092169283917f8be0079c531659141344cd1fd0a4f28419497f9722a3daafe3b4186f6b6457e09190a35050565b6001600160a01b0381168114620000da57600080fd5b50565b60008060408385031215620000f157600080fd5b8251620000fe81620000c4565b60208401519092506200011181620000c4565b809150509250929050565b6080516128f3620001d9600039600081816104b30152818161052d015281816105df0152818161065a0152818161073b015281816107da01528181610a0e01528181610a9b01528181610caa0152818161102c015281816110a2015281816111b3015281816112cf015281816113ba01528181611453015281816114e10152818161189e015281816119bb01528181611a3a01528181611db201528181611e4401528181612007015281816120f801526121e301526128f36000f3fe608060405234801561001057600080fd5b50600436106102065760003560e01c8063703df7931161011a57806399b8562c116100ad578063e32e22e31161007c578063e32e22e31461049b578063e46a2f39146104ae578063f2374983146104d5578063f2fde38b146104e8578063fd772ae6146104fb57600080fd5b806399b8562c14610410578063a13202e914610477578063d01ed0801461047f578063e256888f1461049257600080fd5b806379e2952b116100e957806379e2952b146103d157806380bf6dae146103e45780638da5cb5b146103f7578063967ef78d1461040857600080fd5b8063703df793146103905780637071f0c4146103a3578063715018a6146103b657806373425197146103be57600080fd5b806345ff0d8f1161019d57806350d58f7e1161016c57806350d58f7e1461034c57806351fb012d1461035f578063591185631461036c5780635e81f9c3146103745780636d42086a1461038757600080fd5b806345ff0d8f1461030b5780634bd78e411461031e5780634e4b014714610326578063504ef8111461033957600080fd5b80630fcf692f116101d95780630fcf692f146102b7578063387297fc146102cd5780633af32abf146102e05780633f5311821461030357600080fd5b8063023d94d41461020b578063052d9e7e1461025f578063067a0075146102745780630b0329b91461029f575b600080fd5b61023d61021936600461234d565b60066020526000908152604090208054600182015460029092015490919060ff1683565b6040805193845260208401929092521515908201526060015b60405180910390f35b61027261026d366004612384565b61050e565b005b61028761028236600461234d565b610595565b6040516001600160a01b039091168152602001610256565b6003546102879061010090046001600160a01b031681565b6102bf6105a8565b604051908152602001610256565b6102726102db3660046123b6565b6105b8565b6102f36102ee3660046123b6565b61060e565b6040519015158152602001610256565b6102bf61061b565b6102726103193660046123d3565b610634565b6102726106c3565b600454610287906001600160a01b031681565b610272610347366004612403565b6107a9565b61027261035a366004612499565b610a8e565b6003546102f39060ff1681565b610272610b49565b6102726103823660046124db565b610bd1565b6102bf60075481565b61027261039e36600461234d565b610c8c565b6102726103b1366004612547565b610ce1565b610272610e6b565b6102bf6103cc36600461234d565b610e7d565b6102726103df3660046123b6565b610e9e565b6102726103f236600461259e565b610efa565b6000546001600160a01b0316610287565b6005546102bf565b61042361041e36600461234d565b6113a9565b604080516001600160a01b039a8b16815260208101999099528801969096526060870194909452608086019290925260a085015260c084015261ffff1660e083015290911661010082015261012001610256565b6102bf6115cb565b61027261048d3660046123b6565b6115dc565b6102bf61271081565b6102726104a9366004612403565b6116d1565b6102877f000000000000000000000000000000000000000000000000000000000000000081565b6102726104e336600461259e565b611927565b6102726104f63660046123b6565b611c78565b610272610509366004612683565b611cf1565b610516611d07565b604051630296cf3f60e11b815281151560048201527f00000000000000000000000000000000000000000000000000000000000000006001600160a01b03169063052d9e7e906024015b600060405180830381600087803b15801561057a57600080fd5b505af115801561058e573d6000803e3d6000fd5b5050505050565b60006105a2600183611d61565b92915050565b6105b5600a6127106126c7565b81565b6105c0611d07565b604051630e1ca5ff60e21b81526001600160a01b0382811660048301527f0000000000000000000000000000000000000000000000000000000000000000169063387297fc90602401610560565b60006105a2600183611d74565b610628600a6127106126c7565b6105b5906127106126e9565b61063c611d07565b6040516345ff0d8f60e01b81526004810183905281151560248201527f00000000000000000000000000000000000000000000000000000000000000006001600160a01b0316906345ff0d8f906044015b600060405180830381600087803b1580156106a757600080fd5b505af11580156106bb573d6000803e3d6000fd5b505050505050565b6004546001600160a01b031633146107165760405162461bcd60e51b81526020600482015260116024820152703737ba103832b73234b7339037bbb732b960791b60448201526064015b60405180910390fd5b6004805460405163f2fde38b60e01b81526001600160a01b03918216928101929092527f0000000000000000000000000000000000000000000000000000000000000000169063f2fde38b90602401600060405180830381600087803b15801561077f57600080fd5b505af1158015610793573d6000803e3d6000fd5b5050600480546001600160a01b03191690555050565b60035461010090046001600160a01b031633146107d85760405162461bcd60e51b815260040161070d906126fc565b7f00000000000000000000000000000000000000000000000000000000000000006001600160a01b031663081e3eda6040518163ffffffff1660e01b8152600401602060405180830381865afa158015610836573d6000803e3d6000fd5b505050506040513d601f19601f8201168201806040525081019061085a9190612733565b84106108785760405162461bcd60e51b815260040161070d9061274c565b60008481526006602052604090206002015460ff16156108da5760405162461bcd60e51b815260206004820181905260248201527f66697865642070657263656e74206661726d20616c7265616479206164646564604482015260640161070d565b6000836007546108ea919061278f565b90506108f9600a6127106126c7565b610905906127106126e9565b8111156109545760405162461bcd60e51b815260206004820152601860248201527f616c6c6f636174696f6e206f7574206f6620626f756e64730000000000000000604482015260640161070d565b6007819055604080516060810182528681526020808201878152600183850181815260008b81526006855286812095518655925185830155516002909401805460ff19169415159490941790935560058054938401815590527f036b6384b5eca791c62761152d0c79bb0604c104a5fb6f4eb0703f3154bb3db0909101879055905185815286917fe189b71b104a634f2a39080757eda5ebcc40b9cbd276eb27dc0e17edbe2dc793910160405180910390a28215610a80577f00000000000000000000000000000000000000000000000000000000000000006001600160a01b031663630b5ba16040518163ffffffff1660e01b8152600401600060405180830381600087803b158015610a6757600080fd5b505af1158015610a7b573d6000803e3d6000fd5b505050505b811561058e5761058e611d96565b60005b81811015610b44577f00000000000000000000000000000000000000000000000000000000000000006001600160a01b03166351eb05a6848484818110610ada57610ada6127a2565b905060200201356040518263ffffffff1660e01b8152600401610aff91815260200190565b600060405180830381600087803b158015610b1957600080fd5b505af1158015610b2d573d6000803e3d6000fd5b505050508080610b3c906127b8565b915050610a91565b505050565b60035461010090046001600160a01b03163314610b785760405162461bcd60e51b815260040161070d906126fc565b6000610b8360055490565b11610bc75760405162461bcd60e51b81526020600482015260146024820152731b9bc8199a5e19590819985c9b5cc8185919195960621b604482015260640161070d565b610bcf611d96565b565b610bd9611d07565b828114610c195760405162461bcd60e51b815260206004820152600e60248201526d0c2e4e4c2f240dad2e6dac2e8c6d60931b604482015260640161070d565b60005b8381101561058e57610c7a858583818110610c3957610c396127a2565b9050602002016020810190610c4e91906123b6565b848484818110610c6057610c606127a2565b9050602002016020810190610c759190612384565b6121bc565b80610c84816127b8565b915050610c1c565b610c94611d07565b60405163703df79360e01b8152600481018290527f00000000000000000000000000000000000000000000000000000000000000006001600160a01b03169063703df79390602401610560565b610ce9611d07565b60005b82811015610e65576000848483818110610d0857610d086127a2565b9050602002016020810190610d1d91906123b6565b6040516370a0823160e01b81523060048201529091506000906001600160a01b038316906370a0823190602401602060405180830381865afa158015610d67573d6000803e3d6000fd5b505050506040513d601f19601f82011682018060405250810190610d8b9190612733565b60405163a9059cbb60e01b81526001600160a01b038681166004830152602482018390529192509083169063a9059cbb906044016020604051808303816000875af1158015610dde573d6000803e3d6000fd5b505050506040513d601f19601f82011682018060405250810190610e0291906127d1565b50816001600160a01b0316846001600160a01b03167f58731823bcac65ecb95d39668d6b6a69a9c9b01156841220fc40d9eede89f81e83604051610e4891815260200190565b60405180910390a350508080610e5d906127b8565b915050610cec565b50505050565b610e73611d07565b610bcf6000612212565b60058181548110610e8d57600080fd5b600091825260209091200154905081565b610ea6611d07565b600480546001600160a01b0319166001600160a01b0383169081179091556040519081527f99ae95d8749db01b47a0a054504744dd2c887cc5acb17695480c48f3f0a457459060200160405180910390a150565b60035461010090046001600160a01b03163314610f295760405162461bcd60e51b815260040161070d906126fc565b888714610f785760405162461bcd60e51b815260206004820152601b60248201527f616c6c6f63506f696e7473206c656e677468206d69736d617463680000000000604482015260640161070d565b84898114610fce578015610fce5760405162461bcd60e51b815260206004820152601d60248201527f6465706f736974466565734250206c656e677468206d69736d61746368000000604482015260640161070d565b838a81146110245780156110245760405162461bcd60e51b815260206004820152601860248201527f7265776172646572206c656e677468206d69736d617463680000000000000000604482015260640161070d565b831561109e577f00000000000000000000000000000000000000000000000000000000000000006001600160a01b031663630b5ba16040518163ffffffff1660e01b8152600401600060405180830381600087803b15801561108557600080fd5b505af1158015611099573d6000803e3d6000fd5b505050505b60007f00000000000000000000000000000000000000000000000000000000000000006001600160a01b031663081e3eda6040518163ffffffff1660e01b8152600401602060405180830381865afa1580156110fe573d6000803e3d6000fd5b505050506040513d601f19601f820116820180604052508101906111229190612733565b905060005b8c81101561138b5760008e8e83818110611143576111436127a2565b90506020020135905082811061116b5760405162461bcd60e51b815260040161070d9061274c565b60008d8d8481811061117f5761117f6127a2565b9050602002013590506000808760001480611198575086155b1561123157604051632f380b3560e01b8152600481018590527f00000000000000000000000000000000000000000000000000000000000000006001600160a01b031690632f380b359060240160e060405180830381865afa158015611202573d6000803e3d6000fd5b505050506040513d601f19601f8201168201806040525081019061122691906127fe565b975092955050505050505b8715611261578d8d86818110611249576112496127a2565b905060200201602081019061125e9190612873565b91505b8615611291578b8b86818110611279576112796127a2565b905060200201602081019061128e91906123b6565b90505b6040516301b2a43d60e51b815260048101859052602481018490526000604482015261ffff831660648201526001600160a01b0382811660848301527f0000000000000000000000000000000000000000000000000000000000000000169063365487a09060a401600060405180830381600087803b15801561131357600080fd5b505af1158015611327573d6000803e3d6000fd5b50506040805186815261ffff861660208201526001600160a01b03851693508792507fd6bdba3c6a424d89b06807208373b169671d5d4847d469c4fa905dbcd0ae78f7910160405180910390a3505050508080611383906127b8565b915050611127565b50831561139a5761139a611d96565b50505050505050505050505050565b6000806000806000806000806000807f00000000000000000000000000000000000000000000000000000000000000006001600160a01b031663889b83076040518163ffffffff1660e01b8152600401602060405180830381865afa158015611416573d6000803e3d6000fd5b505050506040513d601f19601f8201168201806040525081019061143a9190612733565b604051632f380b3560e01b8152600481018d90529091507f00000000000000000000000000000000000000000000000000000000000000006001600160a01b031690632f380b359060240160e060405180830381865afa1580156114a2573d6000803e3d6000fd5b505050506040513d601f19601f820116820180604052508101906114c691906127fe565b909192509091509050809650819550829c50839d50505050507f00000000000000000000000000000000000000000000000000000000000000006001600160a01b03166317caf6f16040518163ffffffff1660e01b8152600401602060405180830381865afa15801561153d573d6000803e3d6000fd5b505050506040513d601f19601f820116820180604052508101906115619190612733565b9750876115768a670de0b6b3a7640000612890565b61158091906126c7565b9650670de0b6b3a76400006115958883612890565b61159f91906126c7565b95506115ae8662015180612890565b94506115bb85601e612890565b9350509193959799909294969850565b60006115d76001612262565b905090565b60035461010090046001600160a01b0316331461160b5760405162461bcd60e51b815260040161070d906126fc565b6001600160a01b0381166116725760405162461bcd60e51b815260206004820152602860248201527f63616e6e6f74207472616e73666572206661726d2061646d696e20746f206164604482015267647265737328302960c01b606482015260840161070d565b600380546001600160a01b03838116610100908102610100600160a81b0319841617938490556040519281900482169304169082907fe26b86b59af1ab12a8e5cd4068e9f64c19ef575cf3bf30bf37b92fef2a20411390600090a35050565b60035461010090046001600160a01b031633146117005760405162461bcd60e51b815260040161070d906126fc565b6000848152600660205260409020600281015460ff166117595760405162461bcd60e51b81526020600482015260146024820152731b9bdd0818481d985b1a590819985c9b481c1a5960621b604482015260640161070d565b600081600101546007548661176e919061278f565b61177891906126e9565b9050611787600a6127106126c7565b611793906127106126e9565b8111156117e25760405162461bcd60e51b815260206004820152601c60248201527f6e657720616c6c6f636174696f6e206f7574206f6620626f756e647300000000604482015260640161070d565b600781905560018201805490869055600086900361185b5760028301805460ff1916905560005b600554811015611859578760058281548110611827576118276127a2565b9060005260206000200154036118475761184281600561226c565b611859565b80611851816127b8565b915050611809565b505b604080518281526020810188905288917fa23c6176b0c16652f1119ebe6593b1610c0c711b05167b035697e3269e9cf807910160405180910390a28415611910577f00000000000000000000000000000000000000000000000000000000000000006001600160a01b031663630b5ba16040518163ffffffff1660e01b8152600401600060405180830381600087803b1580156118f757600080fd5b505af115801561190b573d6000803e3d6000fd5b505050505b831561191e5761191e611d96565b50505050505050565b60035461010090046001600160a01b031633146119565760405162461bcd60e51b815260040161070d906126fc565b888714801561196457508885145b801561196f57508883145b6119b35760405162461bcd60e51b81526020600482015260156024820152740c2e4e4c2f240d8cadccee8d040dad2e6dac2e8c6d605b1b604482015260640161070d565b8115611a2d577f00000000000000000000000000000000000000000000000000000000000000006001600160a01b031663630b5ba16040518163ffffffff1660e01b8152600401600060405180830381600087803b158015611a1457600080fd5b505af1158015611a28573d6000803e3d6000fd5b505050505b60005b89811015611c5d577f00000000000000000000000000000000000000000000000000000000000000006001600160a01b031663de9f3a178c8c84818110611a7957611a796127a2565b905060200201358b8b85818110611a9257611a926127a2565b9050602002016020810190611aa791906123b6565b60008b8b87818110611abb57611abb6127a2565b9050602002016020810190611ad09190612873565b8a8a88818110611ae257611ae26127a2565b9050602002016020810190611af791906123b6565b6040516001600160e01b031960e088901b16815260048101959095526001600160a01b039384166024860152911515604485015261ffff16606484015216608482015260a401600060405180830381600087803b158015611b5757600080fd5b505af1158015611b6b573d6000803e3d6000fd5b50505050848482818110611b8157611b816127a2565b9050602002016020810190611b9691906123b6565b6001600160a01b0316898983818110611bb157611bb16127a2565b9050602002016020810190611bc691906123b6565b6001600160a01b03167f4d898462e63ce1ee713488095df223e454e65db487fc24844f3d51b9e039a1768d8d85818110611c0257611c026127a2565b905060200201358a8a86818110611c1b57611c1b6127a2565b9050602002016020810190611c309190612873565b6040805192835261ffff90911660208301520160405180910390a380611c55816127b8565b915050611a30565b508015611c6c57611c6c611d96565b50505050505050505050565b611c80611d07565b6001600160a01b038116611ce55760405162461bcd60e51b815260206004820152602660248201527f4f776e61626c653a206e6577206f776e657220697320746865207a65726f206160448201526564647265737360d01b606482015260840161070d565b611cee81612212565b50565b611cf9611d07565b611d0382826121bc565b5050565b6000546001600160a01b03163314610bcf5760405162461bcd60e51b815260206004820181905260248201527f4f776e61626c653a2063616c6c6572206973206e6f7420746865206f776e6572604482015260640161070d565b6000611d6d8383612323565b9392505050565b6001600160a01b03811660009081526001830160205260408120541515611d6d565b6000611da160055490565b905080600003611dae5750565b60007f00000000000000000000000000000000000000000000000000000000000000006001600160a01b03166317caf6f16040518163ffffffff1660e01b8152600401602060405180830381865afa158015611e0e573d6000803e3d6000fd5b505050506040513d601f19601f82011682018060405250810190611e329190612733565b90506000805b83811015611f185760007f00000000000000000000000000000000000000000000000000000000000000006001600160a01b0316632f380b3560058481548110611e8457611e846127a2565b90600052602060002001546040518263ffffffff1660e01b8152600401611ead91815260200190565b60e060405180830381865afa158015611eca573d6000803e3d6000fd5b505050506040513d601f19601f82011682018060405250810190611eee91906127fe565b50505050509150508083611f02919061278f565b9250508080611f10906127b8565b915050611e38565b506000611f2582846126e9565b90506000600754612710611f3991906126e9565b611f4561271080612890565b611f4f91906126c7565b90506000612710611f608385612890565b611f6a91906126c7565b90506000611f7884836126e9565b905060005b878110156121b25760006006600060058481548110611f9e57611f9e6127a2565b600091825260208083209091015483528281019390935260409182018120825160608101845281548152600182015494810185905260029091015460ff1615159281019290925260075491935091611ff69086612890565b61200091906126c7565b90506000807f00000000000000000000000000000000000000000000000000000000000000006001600160a01b0316632f380b3560058781548110612047576120476127a2565b90600052602060002001546040518263ffffffff1660e01b815260040161207091815260200190565b60e060405180830381865afa15801561208d573d6000803e3d6000fd5b505050506040513d601f19601f820116820180604052508101906120b191906127fe565b8a516040516301b2a43d60e51b81526004810191909152602481018b90526000604482015261ffff821660648201526001600160a01b0380871660848301529599509097507f0000000000000000000000000000000000000000000000000000000000000000909416955063365487a094505060a490920191506121329050565b600060405180830381600087803b15801561214c57600080fd5b505af1158015612160573d6000803e3d6000fd5b505085516040518681529092507faf6de0e99985e2141e73432bf0e3b3ca80f31561c97ef2fb113614913d5a76cd915060200160405180910390a25050505080806121aa906127b8565b915050611f7d565b5050505050505050565b604051637ebb957360e11b81526001600160a01b03838116600483015282151560248301527f0000000000000000000000000000000000000000000000000000000000000000169063fd772ae69060440161068d565b600080546001600160a01b038381166001600160a01b0319831681178455604051919092169283917f8be0079c531659141344cd1fd0a4f28419497f9722a3daafe3b4186f6b6457e09190a35050565b60006105a2825490565b805482106122ae5760405162461bcd60e51b815260206004820152600f60248201526e092dcc6dee4e4cac6e840d2dcc8caf608b1b604482015260640161070d565b805481906122be906001906126e9565b815481106122ce576122ce6127a2565b90600052602060002001548183815481106122eb576122eb6127a2565b906000526020600020018190555080805480612309576123096128a7565b600190038181906000526020600020016000905590555050565b600082600001828154811061233a5761233a6127a2565b9060005260206000200154905092915050565b60006020828403121561235f57600080fd5b5035919050565b8015158114611cee57600080fd5b803561237f81612366565b919050565b60006020828403121561239657600080fd5b8135611d6d81612366565b6001600160a01b0381168114611cee57600080fd5b6000602082840312156123c857600080fd5b8135611d6d816123a1565b600080604083850312156123e657600080fd5b8235915060208301356123f881612366565b809150509250929050565b6000806000806080858703121561241957600080fd5b8435935060208501359250604085013561243281612366565b9150606085013561244281612366565b939692955090935050565b60008083601f84011261245f57600080fd5b50813567ffffffffffffffff81111561247757600080fd5b6020830191508360208260051b850101111561249257600080fd5b9250929050565b600080602083850312156124ac57600080fd5b823567ffffffffffffffff8111156124c357600080fd5b6124cf8582860161244d565b90969095509350505050565b600080600080604085870312156124f157600080fd5b843567ffffffffffffffff8082111561250957600080fd5b6125158883890161244d565b9096509450602087013591508082111561252e57600080fd5b5061253b8782880161244d565b95989497509550505050565b60008060006040848603121561255c57600080fd5b833567ffffffffffffffff81111561257357600080fd5b61257f8682870161244d565b9094509250506020840135612593816123a1565b809150509250925092565b60008060008060008060008060008060c08b8d0312156125bd57600080fd5b8a3567ffffffffffffffff808211156125d557600080fd5b6125e18e838f0161244d565b909c509a5060208d01359150808211156125fa57600080fd5b6126068e838f0161244d565b909a50985060408d013591508082111561261f57600080fd5b61262b8e838f0161244d565b909850965060608d013591508082111561264457600080fd5b506126518d828e0161244d565b9095509350612664905060808c01612374565b915061267260a08c01612374565b90509295989b9194979a5092959850565b6000806040838503121561269657600080fd5b82356126a1816123a1565b915060208301356123f881612366565b634e487b7160e01b600052601160045260246000fd5b6000826126e457634e487b7160e01b600052601260045260246000fd5b500490565b818103818111156105a2576105a26126b1565b6020808252601c908201527f6d7573742062652063616c6c6564206279206661726d2061646d696e00000000604082015260600190565b60006020828403121561274557600080fd5b5051919050565b60208082526023908201527f706964206973206f7574206f6620626f756e6473206f66204d6173746572417060408201526232ab1960e91b606082015260800190565b808201808211156105a2576105a26126b1565b634e487b7160e01b600052603260045260246000fd5b6000600182016127ca576127ca6126b1565b5060010190565b6000602082840312156127e357600080fd5b8151611d6d81612366565b61ffff81168114611cee57600080fd5b600080600080600080600060e0888a03121561281957600080fd5b8751612824816123a1565b602089015160408a0151919850965061283c816123a1565b80955050606088015193506080880151925060a0880151915060c0880151612863816127ee565b8091505092959891949750929550565b60006020828403121561288557600080fd5b8135611d6d816127ee565b80820281158282048414176105a2576105a26126b1565b634e487b7160e01b600052603160045260246000fdfea264697066735822122017d36f6524c6fa993a1ac52e76db50ca9eef3592afcb3ccb18c496628bee2f0c64736f6c63430008110033",
+  "deployedBytecode": "0x608060405234801561001057600080fd5b50600436106102065760003560e01c8063703df7931161011a57806399b8562c116100ad578063e32e22e31161007c578063e32e22e31461049b578063e46a2f39146104ae578063f2374983146104d5578063f2fde38b146104e8578063fd772ae6146104fb57600080fd5b806399b8562c14610410578063a13202e914610477578063d01ed0801461047f578063e256888f1461049257600080fd5b806379e2952b116100e957806379e2952b146103d157806380bf6dae146103e45780638da5cb5b146103f7578063967ef78d1461040857600080fd5b8063703df793146103905780637071f0c4146103a3578063715018a6146103b657806373425197146103be57600080fd5b806345ff0d8f1161019d57806350d58f7e1161016c57806350d58f7e1461034c57806351fb012d1461035f578063591185631461036c5780635e81f9c3146103745780636d42086a1461038757600080fd5b806345ff0d8f1461030b5780634bd78e411461031e5780634e4b014714610326578063504ef8111461033957600080fd5b80630fcf692f116101d95780630fcf692f146102b7578063387297fc146102cd5780633af32abf146102e05780633f5311821461030357600080fd5b8063023d94d41461020b578063052d9e7e1461025f578063067a0075146102745780630b0329b91461029f575b600080fd5b61023d61021936600461234d565b60066020526000908152604090208054600182015460029092015490919060ff1683565b6040805193845260208401929092521515908201526060015b60405180910390f35b61027261026d366004612384565b61050e565b005b61028761028236600461234d565b610595565b6040516001600160a01b039091168152602001610256565b6003546102879061010090046001600160a01b031681565b6102bf6105a8565b604051908152602001610256565b6102726102db3660046123b6565b6105b8565b6102f36102ee3660046123b6565b61060e565b6040519015158152602001610256565b6102bf61061b565b6102726103193660046123d3565b610634565b6102726106c3565b600454610287906001600160a01b031681565b610272610347366004612403565b6107a9565b61027261035a366004612499565b610a8e565b6003546102f39060ff1681565b610272610b49565b6102726103823660046124db565b610bd1565b6102bf60075481565b61027261039e36600461234d565b610c8c565b6102726103b1366004612547565b610ce1565b610272610e6b565b6102bf6103cc36600461234d565b610e7d565b6102726103df3660046123b6565b610e9e565b6102726103f236600461259e565b610efa565b6000546001600160a01b0316610287565b6005546102bf565b61042361041e36600461234d565b6113a9565b604080516001600160a01b039a8b16815260208101999099528801969096526060870194909452608086019290925260a085015260c084015261ffff1660e083015290911661010082015261012001610256565b6102bf6115cb565b61027261048d3660046123b6565b6115dc565b6102bf61271081565b6102726104a9366004612403565b6116d1565b6102877f000000000000000000000000000000000000000000000000000000000000000081565b6102726104e336600461259e565b611927565b6102726104f63660046123b6565b611c78565b610272610509366004612683565b611cf1565b610516611d07565b604051630296cf3f60e11b815281151560048201527f00000000000000000000000000000000000000000000000000000000000000006001600160a01b03169063052d9e7e906024015b600060405180830381600087803b15801561057a57600080fd5b505af115801561058e573d6000803e3d6000fd5b5050505050565b60006105a2600183611d61565b92915050565b6105b5600a6127106126c7565b81565b6105c0611d07565b604051630e1ca5ff60e21b81526001600160a01b0382811660048301527f0000000000000000000000000000000000000000000000000000000000000000169063387297fc90602401610560565b60006105a2600183611d74565b610628600a6127106126c7565b6105b5906127106126e9565b61063c611d07565b6040516345ff0d8f60e01b81526004810183905281151560248201527f00000000000000000000000000000000000000000000000000000000000000006001600160a01b0316906345ff0d8f906044015b600060405180830381600087803b1580156106a757600080fd5b505af11580156106bb573d6000803e3d6000fd5b505050505050565b6004546001600160a01b031633146107165760405162461bcd60e51b81526020600482015260116024820152703737ba103832b73234b7339037bbb732b960791b60448201526064015b60405180910390fd5b6004805460405163f2fde38b60e01b81526001600160a01b03918216928101929092527f0000000000000000000000000000000000000000000000000000000000000000169063f2fde38b90602401600060405180830381600087803b15801561077f57600080fd5b505af1158015610793573d6000803e3d6000fd5b5050600480546001600160a01b03191690555050565b60035461010090046001600160a01b031633146107d85760405162461bcd60e51b815260040161070d906126fc565b7f00000000000000000000000000000000000000000000000000000000000000006001600160a01b031663081e3eda6040518163ffffffff1660e01b8152600401602060405180830381865afa158015610836573d6000803e3d6000fd5b505050506040513d601f19601f8201168201806040525081019061085a9190612733565b84106108785760405162461bcd60e51b815260040161070d9061274c565b60008481526006602052604090206002015460ff16156108da5760405162461bcd60e51b815260206004820181905260248201527f66697865642070657263656e74206661726d20616c7265616479206164646564604482015260640161070d565b6000836007546108ea919061278f565b90506108f9600a6127106126c7565b610905906127106126e9565b8111156109545760405162461bcd60e51b815260206004820152601860248201527f616c6c6f636174696f6e206f7574206f6620626f756e64730000000000000000604482015260640161070d565b6007819055604080516060810182528681526020808201878152600183850181815260008b81526006855286812095518655925185830155516002909401805460ff19169415159490941790935560058054938401815590527f036b6384b5eca791c62761152d0c79bb0604c104a5fb6f4eb0703f3154bb3db0909101879055905185815286917fe189b71b104a634f2a39080757eda5ebcc40b9cbd276eb27dc0e17edbe2dc793910160405180910390a28215610a80577f00000000000000000000000000000000000000000000000000000000000000006001600160a01b031663630b5ba16040518163ffffffff1660e01b8152600401600060405180830381600087803b158015610a6757600080fd5b505af1158015610a7b573d6000803e3d6000fd5b505050505b811561058e5761058e611d96565b60005b81811015610b44577f00000000000000000000000000000000000000000000000000000000000000006001600160a01b03166351eb05a6848484818110610ada57610ada6127a2565b905060200201356040518263ffffffff1660e01b8152600401610aff91815260200190565b600060405180830381600087803b158015610b1957600080fd5b505af1158015610b2d573d6000803e3d6000fd5b505050508080610b3c906127b8565b915050610a91565b505050565b60035461010090046001600160a01b03163314610b785760405162461bcd60e51b815260040161070d906126fc565b6000610b8360055490565b11610bc75760405162461bcd60e51b81526020600482015260146024820152731b9bc8199a5e19590819985c9b5cc8185919195960621b604482015260640161070d565b610bcf611d96565b565b610bd9611d07565b828114610c195760405162461bcd60e51b815260206004820152600e60248201526d0c2e4e4c2f240dad2e6dac2e8c6d60931b604482015260640161070d565b60005b8381101561058e57610c7a858583818110610c3957610c396127a2565b9050602002016020810190610c4e91906123b6565b848484818110610c6057610c606127a2565b9050602002016020810190610c759190612384565b6121bc565b80610c84816127b8565b915050610c1c565b610c94611d07565b60405163703df79360e01b8152600481018290527f00000000000000000000000000000000000000000000000000000000000000006001600160a01b03169063703df79390602401610560565b610ce9611d07565b60005b82811015610e65576000848483818110610d0857610d086127a2565b9050602002016020810190610d1d91906123b6565b6040516370a0823160e01b81523060048201529091506000906001600160a01b038316906370a0823190602401602060405180830381865afa158015610d67573d6000803e3d6000fd5b505050506040513d601f19601f82011682018060405250810190610d8b9190612733565b60405163a9059cbb60e01b81526001600160a01b038681166004830152602482018390529192509083169063a9059cbb906044016020604051808303816000875af1158015610dde573d6000803e3d6000fd5b505050506040513d601f19601f82011682018060405250810190610e0291906127d1565b50816001600160a01b0316846001600160a01b03167f58731823bcac65ecb95d39668d6b6a69a9c9b01156841220fc40d9eede89f81e83604051610e4891815260200190565b60405180910390a350508080610e5d906127b8565b915050610cec565b50505050565b610e73611d07565b610bcf6000612212565b60058181548110610e8d57600080fd5b600091825260209091200154905081565b610ea6611d07565b600480546001600160a01b0319166001600160a01b0383169081179091556040519081527f99ae95d8749db01b47a0a054504744dd2c887cc5acb17695480c48f3f0a457459060200160405180910390a150565b60035461010090046001600160a01b03163314610f295760405162461bcd60e51b815260040161070d906126fc565b888714610f785760405162461bcd60e51b815260206004820152601b60248201527f616c6c6f63506f696e7473206c656e677468206d69736d617463680000000000604482015260640161070d565b84898114610fce578015610fce5760405162461bcd60e51b815260206004820152601d60248201527f6465706f736974466565734250206c656e677468206d69736d61746368000000604482015260640161070d565b838a81146110245780156110245760405162461bcd60e51b815260206004820152601860248201527f7265776172646572206c656e677468206d69736d617463680000000000000000604482015260640161070d565b831561109e577f00000000000000000000000000000000000000000000000000000000000000006001600160a01b031663630b5ba16040518163ffffffff1660e01b8152600401600060405180830381600087803b15801561108557600080fd5b505af1158015611099573d6000803e3d6000fd5b505050505b60007f00000000000000000000000000000000000000000000000000000000000000006001600160a01b031663081e3eda6040518163ffffffff1660e01b8152600401602060405180830381865afa1580156110fe573d6000803e3d6000fd5b505050506040513d601f19601f820116820180604052508101906111229190612733565b905060005b8c81101561138b5760008e8e83818110611143576111436127a2565b90506020020135905082811061116b5760405162461bcd60e51b815260040161070d9061274c565b60008d8d8481811061117f5761117f6127a2565b9050602002013590506000808760001480611198575086155b1561123157604051632f380b3560e01b8152600481018590527f00000000000000000000000000000000000000000000000000000000000000006001600160a01b031690632f380b359060240160e060405180830381865afa158015611202573d6000803e3d6000fd5b505050506040513d601f19601f8201168201806040525081019061122691906127fe565b975092955050505050505b8715611261578d8d86818110611249576112496127a2565b905060200201602081019061125e9190612873565b91505b8615611291578b8b86818110611279576112796127a2565b905060200201602081019061128e91906123b6565b90505b6040516301b2a43d60e51b815260048101859052602481018490526000604482015261ffff831660648201526001600160a01b0382811660848301527f0000000000000000000000000000000000000000000000000000000000000000169063365487a09060a401600060405180830381600087803b15801561131357600080fd5b505af1158015611327573d6000803e3d6000fd5b50506040805186815261ffff861660208201526001600160a01b03851693508792507fd6bdba3c6a424d89b06807208373b169671d5d4847d469c4fa905dbcd0ae78f7910160405180910390a3505050508080611383906127b8565b915050611127565b50831561139a5761139a611d96565b50505050505050505050505050565b6000806000806000806000806000807f00000000000000000000000000000000000000000000000000000000000000006001600160a01b031663889b83076040518163ffffffff1660e01b8152600401602060405180830381865afa158015611416573d6000803e3d6000fd5b505050506040513d601f19601f8201168201806040525081019061143a9190612733565b604051632f380b3560e01b8152600481018d90529091507f00000000000000000000000000000000000000000000000000000000000000006001600160a01b031690632f380b359060240160e060405180830381865afa1580156114a2573d6000803e3d6000fd5b505050506040513d601f19601f820116820180604052508101906114c691906127fe565b909192509091509050809650819550829c50839d50505050507f00000000000000000000000000000000000000000000000000000000000000006001600160a01b03166317caf6f16040518163ffffffff1660e01b8152600401602060405180830381865afa15801561153d573d6000803e3d6000fd5b505050506040513d601f19601f820116820180604052508101906115619190612733565b9750876115768a670de0b6b3a7640000612890565b61158091906126c7565b9650670de0b6b3a76400006115958883612890565b61159f91906126c7565b95506115ae8662015180612890565b94506115bb85601e612890565b9350509193959799909294969850565b60006115d76001612262565b905090565b60035461010090046001600160a01b0316331461160b5760405162461bcd60e51b815260040161070d906126fc565b6001600160a01b0381166116725760405162461bcd60e51b815260206004820152602860248201527f63616e6e6f74207472616e73666572206661726d2061646d696e20746f206164604482015267647265737328302960c01b606482015260840161070d565b600380546001600160a01b03838116610100908102610100600160a81b0319841617938490556040519281900482169304169082907fe26b86b59af1ab12a8e5cd4068e9f64c19ef575cf3bf30bf37b92fef2a20411390600090a35050565b60035461010090046001600160a01b031633146117005760405162461bcd60e51b815260040161070d906126fc565b6000848152600660205260409020600281015460ff166117595760405162461bcd60e51b81526020600482015260146024820152731b9bdd0818481d985b1a590819985c9b481c1a5960621b604482015260640161070d565b600081600101546007548661176e919061278f565b61177891906126e9565b9050611787600a6127106126c7565b611793906127106126e9565b8111156117e25760405162461bcd60e51b815260206004820152601c60248201527f6e657720616c6c6f636174696f6e206f7574206f6620626f756e647300000000604482015260640161070d565b600781905560018201805490869055600086900361185b5760028301805460ff1916905560005b600554811015611859578760058281548110611827576118276127a2565b9060005260206000200154036118475761184281600561226c565b611859565b80611851816127b8565b915050611809565b505b604080518281526020810188905288917fa23c6176b0c16652f1119ebe6593b1610c0c711b05167b035697e3269e9cf807910160405180910390a28415611910577f00000000000000000000000000000000000000000000000000000000000000006001600160a01b031663630b5ba16040518163ffffffff1660e01b8152600401600060405180830381600087803b1580156118f757600080fd5b505af115801561190b573d6000803e3d6000fd5b505050505b831561191e5761191e611d96565b50505050505050565b60035461010090046001600160a01b031633146119565760405162461bcd60e51b815260040161070d906126fc565b888714801561196457508885145b801561196f57508883145b6119b35760405162461bcd60e51b81526020600482015260156024820152740c2e4e4c2f240d8cadccee8d040dad2e6dac2e8c6d605b1b604482015260640161070d565b8115611a2d577f00000000000000000000000000000000000000000000000000000000000000006001600160a01b031663630b5ba16040518163ffffffff1660e01b8152600401600060405180830381600087803b158015611a1457600080fd5b505af1158015611a28573d6000803e3d6000fd5b505050505b60005b89811015611c5d577f00000000000000000000000000000000000000000000000000000000000000006001600160a01b031663de9f3a178c8c84818110611a7957611a796127a2565b905060200201358b8b85818110611a9257611a926127a2565b9050602002016020810190611aa791906123b6565b60008b8b87818110611abb57611abb6127a2565b9050602002016020810190611ad09190612873565b8a8a88818110611ae257611ae26127a2565b9050602002016020810190611af791906123b6565b6040516001600160e01b031960e088901b16815260048101959095526001600160a01b039384166024860152911515604485015261ffff16606484015216608482015260a401600060405180830381600087803b158015611b5757600080fd5b505af1158015611b6b573d6000803e3d6000fd5b50505050848482818110611b8157611b816127a2565b9050602002016020810190611b9691906123b6565b6001600160a01b0316898983818110611bb157611bb16127a2565b9050602002016020810190611bc691906123b6565b6001600160a01b03167f4d898462e63ce1ee713488095df223e454e65db487fc24844f3d51b9e039a1768d8d85818110611c0257611c026127a2565b905060200201358a8a86818110611c1b57611c1b6127a2565b9050602002016020810190611c309190612873565b6040805192835261ffff90911660208301520160405180910390a380611c55816127b8565b915050611a30565b508015611c6c57611c6c611d96565b50505050505050505050565b611c80611d07565b6001600160a01b038116611ce55760405162461bcd60e51b815260206004820152602660248201527f4f776e61626c653a206e6577206f776e657220697320746865207a65726f206160448201526564647265737360d01b606482015260840161070d565b611cee81612212565b50565b611cf9611d07565b611d0382826121bc565b5050565b6000546001600160a01b03163314610bcf5760405162461bcd60e51b815260206004820181905260248201527f4f776e61626c653a2063616c6c6572206973206e6f7420746865206f776e6572604482015260640161070d565b6000611d6d8383612323565b9392505050565b6001600160a01b03811660009081526001830160205260408120541515611d6d565b6000611da160055490565b905080600003611dae5750565b60007f00000000000000000000000000000000000000000000000000000000000000006001600160a01b03166317caf6f16040518163ffffffff1660e01b8152600401602060405180830381865afa158015611e0e573d6000803e3d6000fd5b505050506040513d601f19601f82011682018060405250810190611e329190612733565b90506000805b83811015611f185760007f00000000000000000000000000000000000000000000000000000000000000006001600160a01b0316632f380b3560058481548110611e8457611e846127a2565b90600052602060002001546040518263ffffffff1660e01b8152600401611ead91815260200190565b60e060405180830381865afa158015611eca573d6000803e3d6000fd5b505050506040513d601f19601f82011682018060405250810190611eee91906127fe565b50505050509150508083611f02919061278f565b9250508080611f10906127b8565b915050611e38565b506000611f2582846126e9565b90506000600754612710611f3991906126e9565b611f4561271080612890565b611f4f91906126c7565b90506000612710611f608385612890565b611f6a91906126c7565b90506000611f7884836126e9565b905060005b878110156121b25760006006600060058481548110611f9e57611f9e6127a2565b600091825260208083209091015483528281019390935260409182018120825160608101845281548152600182015494810185905260029091015460ff1615159281019290925260075491935091611ff69086612890565b61200091906126c7565b90506000807f00000000000000000000000000000000000000000000000000000000000000006001600160a01b0316632f380b3560058781548110612047576120476127a2565b90600052602060002001546040518263ffffffff1660e01b815260040161207091815260200190565b60e060405180830381865afa15801561208d573d6000803e3d6000fd5b505050506040513d601f19601f820116820180604052508101906120b191906127fe565b8a516040516301b2a43d60e51b81526004810191909152602481018b90526000604482015261ffff821660648201526001600160a01b0380871660848301529599509097507f0000000000000000000000000000000000000000000000000000000000000000909416955063365487a094505060a490920191506121329050565b600060405180830381600087803b15801561214c57600080fd5b505af1158015612160573d6000803e3d6000fd5b505085516040518681529092507faf6de0e99985e2141e73432bf0e3b3ca80f31561c97ef2fb113614913d5a76cd915060200160405180910390a25050505080806121aa906127b8565b915050611f7d565b5050505050505050565b604051637ebb957360e11b81526001600160a01b03838116600483015282151560248301527f0000000000000000000000000000000000000000000000000000000000000000169063fd772ae69060440161068d565b600080546001600160a01b038381166001600160a01b0319831681178455604051919092169283917f8be0079c531659141344cd1fd0a4f28419497f9722a3daafe3b4186f6b6457e09190a35050565b60006105a2825490565b805482106122ae5760405162461bcd60e51b815260206004820152600f60248201526e092dcc6dee4e4cac6e840d2dcc8caf608b1b604482015260640161070d565b805481906122be906001906126e9565b815481106122ce576122ce6127a2565b90600052602060002001548183815481106122eb576122eb6127a2565b906000526020600020018190555080805480612309576123096128a7565b600190038181906000526020600020016000905590555050565b600082600001828154811061233a5761233a6127a2565b9060005260206000200154905092915050565b60006020828403121561235f57600080fd5b5035919050565b8015158114611cee57600080fd5b803561237f81612366565b919050565b60006020828403121561239657600080fd5b8135611d6d81612366565b6001600160a01b0381168114611cee57600080fd5b6000602082840312156123c857600080fd5b8135611d6d816123a1565b600080604083850312156123e657600080fd5b8235915060208301356123f881612366565b809150509250929050565b6000806000806080858703121561241957600080fd5b8435935060208501359250604085013561243281612366565b9150606085013561244281612366565b939692955090935050565b60008083601f84011261245f57600080fd5b50813567ffffffffffffffff81111561247757600080fd5b6020830191508360208260051b850101111561249257600080fd5b9250929050565b600080602083850312156124ac57600080fd5b823567ffffffffffffffff8111156124c357600080fd5b6124cf8582860161244d565b90969095509350505050565b600080600080604085870312156124f157600080fd5b843567ffffffffffffffff8082111561250957600080fd5b6125158883890161244d565b9096509450602087013591508082111561252e57600080fd5b5061253b8782880161244d565b95989497509550505050565b60008060006040848603121561255c57600080fd5b833567ffffffffffffffff81111561257357600080fd5b61257f8682870161244d565b9094509250506020840135612593816123a1565b809150509250925092565b60008060008060008060008060008060c08b8d0312156125bd57600080fd5b8a3567ffffffffffffffff808211156125d557600080fd5b6125e18e838f0161244d565b909c509a5060208d01359150808211156125fa57600080fd5b6126068e838f0161244d565b909a50985060408d013591508082111561261f57600080fd5b61262b8e838f0161244d565b909850965060608d013591508082111561264457600080fd5b506126518d828e0161244d565b9095509350612664905060808c01612374565b915061267260a08c01612374565b90509295989b9194979a5092959850565b6000806040838503121561269657600080fd5b82356126a1816123a1565b915060208301356123f881612366565b634e487b7160e01b600052601160045260246000fd5b6000826126e457634e487b7160e01b600052601260045260246000fd5b500490565b818103818111156105a2576105a26126b1565b6020808252601c908201527f6d7573742062652063616c6c6564206279206661726d2061646d696e00000000604082015260600190565b60006020828403121561274557600080fd5b5051919050565b60208082526023908201527f706964206973206f7574206f6620626f756e6473206f66204d6173746572417060408201526232ab1960e91b606082015260800190565b808201808211156105a2576105a26126b1565b634e487b7160e01b600052603260045260246000fd5b6000600182016127ca576127ca6126b1565b5060010190565b6000602082840312156127e357600080fd5b8151611d6d81612366565b61ffff81168114611cee57600080fd5b600080600080600080600060e0888a03121561281957600080fd5b8751612824816123a1565b602089015160408a0151919850965061283c816123a1565b80955050606088015193506080880151925060a0880151915060c0880151612863816127ee565b8091505092959891949750929550565b60006020828403121561288557600080fd5b8135611d6d816127ee565b80820281158282048414176105a2576105a26126b1565b634e487b7160e01b600052603160045260246000fdfea264697066735822122017d36f6524c6fa993a1ac52e76db50ca9eef3592afcb3ccb18c496628bee2f0c64736f6c63430008110033",
+  "sourceMap": "2351:19705:13:-:0;;;3762:1;3713:50;;4645:134;;;;;;;;;;;;;;;;;;;;;;;;;;;;:::i;:::-;936:32:4;719:10:11;936:18:4;:32::i;:::-;-1:-1:-1;;;;;4714:26:13;;;;;4750:9;:22;;;;;;;;-1:-1:-1;;;;;;4750:22:13;;;;;;2351:19705;;2433:187:4;2506:16;2525:6;;-1:-1:-1;;;;;2541:17:4;;;-1:-1:-1;;;;;;2541:17:4;;;;;;2573:40;;2525:6;;;;;;;2573:40;;2506:16;2573:40;2496:124;2433:187;:::o;14:145:21:-;-1:-1:-1;;;;;103:31:21;;93:42;;83:70;;149:1;146;139:12;83:70;14:145;:::o;164:434::-;264:6;272;325:2;313:9;304:7;300:23;296:32;293:52;;;341:1;338;331:12;293:52;373:9;367:16;392:45;431:5;392:45;:::i;:::-;506:2;491:18;;485:25;456:5;;-1:-1:-1;519:47:21;485:25;519:47;:::i;:::-;585:7;575:17;;;164:434;;;;;:::o;:::-;2351:19705:13;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;",
+  "deployedSourceMap": "2351:19705:13:-:0;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;3066:74;;;;;;:::i;:::-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;395:25:21;;;451:2;436:18;;429:34;;;;506:14;499:22;479:18;;;472:50;383:2;368:18;3066:74:13;;;;;;;;7253:130;;;;;;:::i;:::-;;:::i;:::-;;3007:149:0;;;;;;:::i;:::-;;:::i;:::-;;;-1:-1:-1;;;;;1199:32:21;;;1181:51;;1169:2;1154:18;3007:149:0;1035:203:21;2612:24:13;;;;;;;;-1:-1:-1;;;;;2612:24:13;;;3357:84;;;:::i;:::-;;;1389:25:21;;;1377:2;1362:18;3357:84:13;1243:177:21;5912:170:13;;;;;;:::i;:::-;;:::i;3254:148:0:-;;;;;;:::i;:::-;;:::i;:::-;;;1978:14:21;;1971:22;1953:41;;1941:2;1926:18;3254:148:0;1813:187:21;3532:107:13;;;:::i;6790:169::-;;;;;;:::i;:::-;;:::i;5435:260::-;;;:::i;2833:38::-;;;;;-1:-1:-1;;;;;2833:38:13;;;13662:1025;;;;;;:::i;:::-;;:::i;6369:211::-;;;;;;:::i;:::-;;:::i;2175:28:0:-;;;;;;;;;8512:174:13;;;:::i;4210:331:0:-;;;;;;:::i;:::-;;:::i;3713:50:13:-;;;;;;7077:112;;;;;;:::i;:::-;;:::i;7617:364::-;;;;;;:::i;:::-;;:::i;1831:101:4:-;;;:::i;2955:37:13:-;;;;;;:::i;:::-;;:::i;5028:222::-;;;;;;:::i;:::-;;:::i;10893:2332::-;;;;;;:::i;:::-;;:::i;1201:85:4:-;1247:7;1273:6;-1:-1:-1;;;;;1273:6:4;1201:85;;18831:121:13;18918:20;:27;18831:121;;17650:1021;;;;;;:::i;:::-;;:::i;:::-;;;;-1:-1:-1;;;;;7029:15:21;;;7011:34;;7076:2;7061:18;;7054:34;;;;7104:18;;7097:34;;;;7162:2;7147:18;;7140:34;;;;7205:3;7190:19;;7183:35;;;;6991:3;7234:19;;7227:35;7293:3;7278:19;;7271:35;7355:6;7343:19;7337:3;7322:19;;7315:48;7400:15;;;7394:3;7379:19;;7372:44;6960:3;6945:19;17650:1021:13;6584:838:21;2760:132:0;;;:::i;8097:326:13:-;;;;;;:::i;:::-;;:::i;3199:50::-;;3246:3;3199:50;;15179:1751;;;;;;:::i;:::-;;:::i;2678:41::-;;;;;9227:1039;;;;;;:::i;:::-;;:::i;2081:198:4:-;;;;;;:::i;:::-;;:::i;3834:149:0:-;;;;;;:::i;:::-;;:::i;7253:130:13:-;1094:13:4;:11;:13::i;:::-;7335:41:13::1;::::0;-1:-1:-1;;;7335:41:13;;1978:14:21;;1971:22;7335:41:13::1;::::0;::::1;1953::21::0;7335:11:13::1;-1:-1:-1::0;;;;;7335:31:13::1;::::0;::::1;::::0;1926:18:21;;7335:41:13::1;;;;;;;;;;;;;;;;;;::::0;::::1;;;;;;;;;;;;::::0;::::1;;;;;;;;;7253:130:::0;:::o;3007:149:0:-;3092:7;3118:31;:20;3142:6;3118:23;:31::i;:::-;3111:38;3007:149;-1:-1:-1;;3007:149:0:o;3357:84:13:-;3416:25;3439:2;3246:3;3416:25;:::i;:::-;3357:84;:::o;5912:170::-;1094:13:4;:11;:13::i;:::-;6011:64:13::1;::::0;-1:-1:-1;;;6011:64:13;;-1:-1:-1;;;;;1199:32:21;;;6011:64:13::1;::::0;::::1;1181:51:21::0;6011:11:13::1;:38;::::0;::::1;::::0;1154:18:21;;6011:64:13::1;1035:203:21::0;3254:148:0;3333:4;3356:39;:20;3386:8;3356:29;:39::i;3532:107:13:-;3416:25;3439:2;3246:3;3416:25;:::i;:::-;3584:55;;3246:3;3584:55;:::i;6790:169::-;1094:13:4;:11;:13::i;:::-;6891:61:13::1;::::0;-1:-1:-1;;;6891:61:13;;::::1;::::0;::::1;10279:25:21::0;;;10347:14;;10340:22;10320:18;;;10313:50;6891:11:13::1;-1:-1:-1::0;;;;;6891:30:13::1;::::0;::::1;::::0;10252:18:21;;6891:61:13::1;;;;;;;;;;;;;;;;;;::::0;::::1;;;;;;;;;;;;::::0;::::1;;;;;;;;;6790:169:::0;;:::o;5435:260::-;5514:23;;-1:-1:-1;;;;;5514:23:13;5500:10;:37;5492:67;;;;-1:-1:-1;;;5492:67:13;;10576:2:21;5492:67:13;;;10558:21:21;10615:2;10595:18;;;10588:30;-1:-1:-1;;;10634:18:21;;;10627:47;10691:18;;5492:67:13;;;;;;;;;5618:23;;;5569:73;;-1:-1:-1;;;5569:73:13;;-1:-1:-1;;;;;5618:23:13;;;5569:73;;;1181:51:21;;;;5586:11:13;5569:48;;;;1154:18:21;;5569:73:13;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;-1:-1:-1;;5652:23:13;:36;;-1:-1:-1;;;;;;5652:36:13;;;-1:-1:-1;;5435:260:13:o;13662:1025::-;4579:9;;;;;-1:-1:-1;;;;;4579:9:13;4565:10;:23;4557:64;;;;-1:-1:-1;;;4557:64:13;;;;;;;:::i;:::-;13885:11:::1;-1:-1:-1::0;;;;;13885:22:13::1;;:24;;;;;;;;;;;;;;;;;;;;;;;;;;;;::::0;::::1;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;:::i;:::-;13878:4;:31;13870:79;;;;-1:-1:-1::0;;;13870:79:13::1;;;;;;;:::i;:::-;13968:32;::::0;;;:26:::1;:32;::::0;;;;:41:::1;;::::0;::::1;;13967:42;13959:87;;;::::0;-1:-1:-1;;;13959:87:13;;11872:2:21;13959:87:13::1;::::0;::::1;11854:21:21::0;;;11891:18;;;11884:30;11950:34;11930:18;;;11923:62;12002:18;;13959:87:13::1;11670:356:21::0;13959:87:13::1;14056:31;14124:16;14090:31;;:50;;;;:::i;:::-;14056:84:::0;-1:-1:-1;3416:25:13::1;3439:2;3246:3;3416:25;:::i;:::-;3584:55;::::0;3246:3:::1;3584:55;:::i;:::-;14158:23;:52;;14150:89;;;::::0;-1:-1:-1;;;14150:89:13;;12363:2:21;14150:89:13::1;::::0;::::1;12345:21:21::0;12402:2;12382:18;;;12375:30;12441:26;12421:18;;;12414:54;12485:18;;14150:89:13::1;12161:348:21::0;14150:89:13::1;14250:31;:57:::0;;;14352:50:::1;::::0;;::::1;::::0;::::1;::::0;;;;;::::1;::::0;;::::1;::::0;;;14397:4:::1;14352:50:::0;;;;;;-1:-1:-1;14317:32:13;;;:26:::1;:32:::0;;;;;:85;;;;;;;;::::1;::::0;;::::1;::::0;;::::1;::::0;;-1:-1:-1;;14317:85:13::1;::::0;::::1;;::::0;;;::::1;::::0;;;14412:20:::1;:31:::0;;;;::::1;::::0;;;;;;;::::1;::::0;;;14458:43;;1389:25:21;;;14352:50:13;;14458:43:::1;::::0;1362:18:21;14458:43:13::1;;;;;;;14516:19;14512:79;;;14551:11;-1:-1:-1::0;;;;;14551:27:13::1;;:29;;;;;;;;;;;;;;;;;;;;;;;;;;;;::::0;::::1;;;;;;;;;;;;::::0;::::1;;;;;;;;;14512:79;14605:25;14601:80;;;14646:24;:22;:24::i;6369:211::-:0;6453:16;6448:126;6475:22;;;6448:126;;;6525:11;-1:-1:-1;;;;;6525:22:13;;6548:4;;6553:8;6548:14;;;;;;;:::i;:::-;;;;;;;6525:38;;;;;;;;;;;;;1389:25:21;;1377:2;1362:18;;1243:177;6525:38:13;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;6499:10;;;;;:::i;:::-;;;;6448:126;;;;6369:211;;:::o;8512:174::-;4579:9;;;;;-1:-1:-1;;;;;4579:9:13;4565:10;:23;4557:64;;;;-1:-1:-1;;;4557:64:13;;;;;;;:::i;:::-;8619:1:::1;8586:30;18918:20:::0;:27;;18831:121;8586:30:::1;:34;8578:67;;;::::0;-1:-1:-1;;;8578:67:13;;12988:2:21;8578:67:13::1;::::0;::::1;12970:21:21::0;13027:2;13007:18;;;13000:30;-1:-1:-1;;;13046:18:21;;;13039:50;13106:18;;8578:67:13::1;12786:344:21::0;8578:67:13::1;8655:24;:22;:24::i;:::-;8512:174::o:0;4210:331:0:-;1094:13:4;:11;:13::i;:::-;4348:36:0;;::::1;4340:63;;;::::0;-1:-1:-1;;;4340:63:0;;13337:2:21;4340:63:0::1;::::0;::::1;13319:21:21::0;13376:2;13356:18;;;13349:30;-1:-1:-1;;;13395:18:21;;;13388:44;13449:18;;4340:63:0::1;13135:338:21::0;4340:63:0::1;4418:9;4413:122;4433:21:::0;;::::1;4413:122;;;4475:49;4497:10;;4508:1;4497:13;;;;;;;:::i;:::-;;;;;;;;;;;;;;:::i;:::-;4512:8;;4521:1;4512:11;;;;;;;:::i;:::-;;;;;;;;;;;;;;:::i;:::-;4475:21;:49::i;:::-;4456:3:::0;::::1;::::0;::::1;:::i;:::-;;;;4413:122;;7077:112:13::0;1094:13:4;:11;:13::i;:::-;7147:35:13::1;::::0;-1:-1:-1;;;7147:35:13;;::::1;::::0;::::1;1389:25:21::0;;;7147:11:13::1;-1:-1:-1::0;;;;;7147:25:13::1;::::0;::::1;::::0;1362:18:21;;7147:35:13::1;1243:177:21::0;7617:364:13;1094:13:4;:11;:13::i;:::-;7712::13::1;7707:268;7731:22:::0;;::::1;7707:268;;;7778:12;7793:7;;7801:5;7793:14;;;;;;;:::i;:::-;;;;;;;;;;;;;;:::i;:::-;7839:30;::::0;-1:-1:-1;;;7839:30:13;;7863:4:::1;7839:30;::::0;::::1;1181:51:21::0;7778:29:13;;-1:-1:-1;7821:15:13::1;::::0;-1:-1:-1;;;;;7839:15:13;::::1;::::0;::::1;::::0;1154:18:21;;7839:30:13::1;;;;;;;;;;;;;;;;;::::0;::::1;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;:::i;:::-;7883:28;::::0;-1:-1:-1;;;7883:28:13;;-1:-1:-1;;;;;13937:32:21;;;7883:28:13::1;::::0;::::1;13919:51:21::0;13986:18;;;13979:34;;;7821:48:13;;-1:-1:-1;7883:14:13;;::::1;::::0;::::1;::::0;13892:18:21;;7883:28:13::1;;;;;;;;;;;;;;;;;;::::0;::::1;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;:::i;:::-;;7949:5;-1:-1:-1::0;;;;;7930:34:13::1;7944:3;-1:-1:-1::0;;;;;7930:34:13::1;;7956:7;7930:34;;;;1389:25:21::0;;1377:2;1362:18;;1243:177;7930:34:13::1;;;;;;;;7764:211;;7755:7;;;;;:::i;:::-;;;;7707:268;;;;7617:364:::0;;;:::o;1831:101:4:-;1094:13;:11;:13::i;:::-;1895:30:::1;1922:1;1895:18;:30::i;2955:37:13:-:0;;;;;;;;;;;;;;;;;;;;;;;;-1:-1:-1;2955:37:13;:::o;5028:222::-;1094:13:4;:11;:13::i;:::-;5127:23:13::1;:50:::0;;-1:-1:-1;;;;;;5127:50:13::1;-1:-1:-1::0;;;;;5127:50:13;::::1;::::0;;::::1;::::0;;;5192:51:::1;::::0;1181::21;;;5192::13::1;::::0;1169:2:21;1154:18;5192:51:13::1;;;;;;;5028:222:::0;:::o;10893:2332::-;4579:9;;;;;-1:-1:-1;;;;;4579:9:13;4565:10;:23;4557:64;;;;-1:-1:-1;;;4557:64:13;;;;;;;:::i;:::-;11201:35;;::::1;11193:75;;;::::0;-1:-1:-1;;;11193:75:13;;14476:2:21;11193:75:13::1;::::0;::::1;14458:21:21::0;14515:2;14495:18;;;14488:30;14554:29;14534:18;;;14527:57;14601:18;;11193:75:13::1;14274:351:21::0;11193:75:13::1;11336:14:::0;11370:33;;::::1;11367:127;;11427:22:::0;;11419:64:::1;;;::::0;-1:-1:-1;;;11419:64:13;;14832:2:21;11419:64:13::1;::::0;::::1;14814:21:21::0;14871:2;14851:18;;;14844:30;14910:31;14890:18;;;14883:59;14959:18;;11419:64:13::1;14630:353:21::0;11419:64:13::1;11564:10:::0;11594:30;;::::1;11591:116;;11648:19:::0;;11640:56:::1;;;::::0;-1:-1:-1;;;11640:56:13;;15190:2:21;11640:56:13::1;::::0;::::1;15172:21:21::0;15229:2;15209:18;;;15202:30;15268:26;15248:18;;;15241:54;15312:18;;11640:56:13::1;14988:348:21::0;11640:56:13::1;11721:19;11717:79;;;11756:11;-1:-1:-1::0;;;;;11756:27:13::1;;:29;;;;;;;;;;;;;;;;;;;;;;;;;;;;::::0;::::1;;;;;;;;;;;;::::0;::::1;;;;;;;;;11717:79;11806:18;11827:11;-1:-1:-1::0;;;;;11827:22:13::1;;:24;;;;;;;;;;;;;;;;;;;;;;;;;;;;::::0;::::1;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;:::i;:::-;11806:45;;11866:13;11861:1268;11885:20:::0;;::::1;11861:1268;;;11930:18;11951:5;;11957;11951:12;;;;;;;:::i;:::-;;;;;;;11930:33;;11998:10;11985;:23;11977:71;;;;-1:-1:-1::0;;;11977:71:13::1;;;;;;;:::i;:::-;12062:25;12090:12;;12103:5;12090:19;;;;;;;:::i;:::-;;;;;;;12062:47;;12218:26;12258:27:::0;12302:17:::1;12323:1;12302:22;:45;;;-1:-1:-1::0;12328:19:13;;12302:45:::1;12299:256;;;12505:35;::::0;-1:-1:-1;;;12505:35:13;;::::1;::::0;::::1;1389:25:21::0;;;12505:11:13::1;-1:-1:-1::0;;;;;12505:23:13::1;::::0;::::1;::::0;1362:18:21;;12505:35:13::1;;;;;;;;;;;;;;;;;::::0;::::1;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;:::i;:::-;12453:87:::0;-1:-1:-1;12453:87:13;;-1:-1:-1;;;;;;12299:256:13::1;12620:22:::0;;12617:103:::1;;12684:14;;12699:5;12684:21;;;;;;;:::i;:::-;;;;;;;;;;;;;;:::i;:::-;12662:43;;12617:103;12781:19:::0;;12778:92:::1;;12838:10;;12849:5;12838:17;;;;;;;:::i;:::-;;;;;;;;;;;;;;:::i;:::-;12820:35;;12778:92;12932:91;::::0;-1:-1:-1;;;12932:91:13;;::::1;::::0;::::1;17046:25:21::0;;;17087:18;;;17080:34;;;12979:5:13::1;17130:18:21::0;;;17123:50;17221:6;17209:19;;17189:18;;;17182:47;-1:-1:-1;;;;;17266:32:21;;;17245:19;;;17238:61;12932:11:13::1;:15;::::0;::::1;::::0;17018:19:21;;12932:91:13::1;;;;;;;;;;;;;;;;;::::0;::::1;;;;;;;;;;;;::::0;::::1;;;;;-1:-1:-1::0;;13042:76:13::1;::::0;;17482:25:21;;;17555:6;17543:19;;17538:2;17523:18;;17516:47;-1:-1:-1;;;;;13042:76:13;::::1;::::0;-1:-1:-1;13050:10:13;;-1:-1:-1;13042:76:13::1;::::0;17455:18:21;13042:76:13::1;;;;;;;11916:1213;;;;11907:7;;;;;:::i;:::-;;;;11861:1268;;;;13143:25;13139:80;;;13184:24;:22;:24::i;:::-;11183:2042;;;10893:2332:::0;;;;;;;;;;:::o;17650:1021::-;17752:15;17781:27;17822:29;17865:37;17916:27;17957:24;17995:26;18035:19;18068:20;18113:23;18139:11;-1:-1:-1;;;;;18139:27:13;;:29;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;:::i;:::-;18241:28;;-1:-1:-1;;;18241:28:13;;;;;1389:25:21;;;18113:55:13;;-1:-1:-1;18241:11:13;-1:-1:-1;;;;;18241:23:13;;;;1362:18:21;;18241:28:13;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;:::i;:::-;18178:91;;;;;;;;;;;;;;;;;;;;;;;;;18303:11;-1:-1:-1;;;;;18303:27:13;;:29;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;:::i;:::-;18279:53;-1:-1:-1;18279:53:13;18375:26;:19;18397:4;18375:26;:::i;:::-;18374:52;;;;:::i;:::-;18342:84;-1:-1:-1;18510:4:13;18459:47;18342:84;18459:15;:47;:::i;:::-;18458:56;;;;:::i;:::-;18436:78;-1:-1:-1;18584:28:13;18436:78;18606:6;18584:28;:::i;:::-;18565:47;-1:-1:-1;18643:21:13;18565:47;18662:2;18643:21;:::i;:::-;18622:42;;18103:568;17650:1021;;;;;;;;;;;:::o;2760:132:0:-;2830:7;2856:29;:20;:27;:29::i;:::-;2849:36;;2760:132;:::o;8097:326:13:-;4579:9;;;;;-1:-1:-1;;;;;4579:9:13;4565:10;:23;4557:64;;;;-1:-1:-1;;;4557:64:13;;;;;;;:::i;:::-;-1:-1:-1;;;;;8197:27:13;::::1;8189:80;;;::::0;-1:-1:-1;;;8189:80:13;;17949:2:21;8189:80:13::1;::::0;::::1;17931:21:21::0;17988:2;17968:18;;;17961:30;18027:34;18007:18;;;18000:62;-1:-1:-1;;;18078:18:21;;;18071:38;18126:19;;8189:80:13::1;17747:404:21::0;8189:80:13::1;8307:9;::::0;;-1:-1:-1;;;;;8326:25:13;;::::1;8307:9;8326:25:::0;;::::1;-1:-1:-1::0;;;;;;8326:25:13;::::1;;::::0;;;;8366:50:::1;::::0;8307:9;;;::::1;::::0;::::1;::::0;8406::::1;;::::0;8307;;8366:50:::1;::::0;8279:25:::1;::::0;8366:50:::1;8179:244;8097:326:::0;:::o;15179:1751::-;4579:9;;;;;-1:-1:-1;;;;;4579:9:13;4565:10;:23;4557:64;;;;-1:-1:-1;;;4557:64:13;;;;;;;:::i;:::-;15387:45:::1;15435:32:::0;;;:26:::1;:32;::::0;;;;15485:25:::1;::::0;::::1;::::0;::::1;;15477:58;;;::::0;-1:-1:-1;;;15477:58:13;;18358:2:21;15477:58:13::1;::::0;::::1;18340:21:21::0;18397:2;18377:18;;;18370:30;-1:-1:-1;;;18416:18:21;;;18409:50;18476:18;;15477:58:13::1;18156:344:21::0;15477:58:13::1;15545:42;15658:16;:34;;;15623:31;;15604:16;:50;;;;:::i;:::-;15603:89;;;;:::i;:::-;15545:147:::0;-1:-1:-1;3416:25:13::1;3439:2;3246:3;3416:25;:::i;:::-;3584:55;::::0;3246:3:::1;3584:55;:::i;:::-;15710:34;:63;;15702:104;;;::::0;-1:-1:-1;;;15702:104:13;;18707:2:21;15702:104:13::1;::::0;::::1;18689:21:21::0;18746:2;18726:18;;;18719:30;18785;18765:18;;;18758:58;18833:18;;15702:104:13::1;18505:352:21::0;15702:104:13::1;15817:31;:68:::0;;;15924:34:::1;::::0;::::1;::::0;;15968:53;;;;15895:26:::1;16036:21:::0;;;16032:635:::1;;16145:25;::::0;::::1;:33:::0;;-1:-1:-1;;16145:33:13::1;::::0;;16173:5:::1;16248:256;16280:20;:27:::0;16272:35;::::1;16248:256;;;16371:4;16340:20;16361:5;16340:27;;;;;;;;:::i;:::-;;;;;;;;;:35:::0;16336:154:::1;;16399:45;16416:5;16423:20;16399:16;:45::i;:::-;16466:5;;16336:154;16309:7:::0;::::1;::::0;::::1;:::i;:::-;;;;16248:256;;;;16032:635;16681:63;::::0;;19036:25:21;;;19092:2;19077:18;;19070:34;;;16701:4:13;;16681:63:::1;::::0;19009:18:21;16681:63:13::1;;;;;;;16759:19;16755:79;;;16794:11;-1:-1:-1::0;;;;;16794:27:13::1;;:29;;;;;;;;;;;;;;;;;;;;;;;;;;;;::::0;::::1;;;;;;;;;;;;::::0;::::1;;;;;;;;;16755:79;16848:25;16844:80;;;16889:24;:22;:24::i;:::-;15377:1553;;;15179:1751:::0;;;;:::o;9227:1039::-;4579:9;;;;;-1:-1:-1;;;;;4579:9:13;4565:10;:23;4557:64;;;;-1:-1:-1;;;4557:64:13;;;;;;;:::i;:::-;9554:42;;::::1;:106:::0;::::1;;;-1:-1:-1::0;9616:44:13;;::::1;9554:106;:166;;;;-1:-1:-1::0;9680:40:13;;::::1;9554:166;9533:234;;;::::0;-1:-1:-1;;;9533:234:13;;19317:2:21;9533:234:13::1;::::0;::::1;19299:21:21::0;19356:2;19336:18;;;19329:30;-1:-1:-1;;;19375:18:21;;;19368:51;19436:18;;9533:234:13::1;19115:345:21::0;9533:234:13::1;9782:19;9778:79;;;9817:11;-1:-1:-1::0;;;;;9817:27:13::1;;:29;;;;;;;;;;;;;;;;;;;;;;;;;;;;::::0;::::1;;;;;;;;;;;;::::0;::::1;;;;;;;;;9778:79;9872:13;9867:303;9891:27:::0;;::::1;9867:303;;;9943:11;-1:-1:-1::0;;;;;9943:15:13::1;;9959:12;;9972:5;9959:19;;;;;;;:::i;:::-;;;;;;;9980:12;;9993:5;9980:19;;;;;;;:::i;:::-;;;;;;;;;;;;;;:::i;:::-;10001:5;10008:14;;10023:5;10008:21;;;;;;;:::i;:::-;;;;;;;;;;;;;;:::i;:::-;10031:10;;10042:5;10031:17;;;;;;;:::i;:::-;;;;;;;;;;;;;;:::i;:::-;9943:106;::::0;-1:-1:-1;;;;;;9943:106:13::1;::::0;;;;;;::::1;::::0;::::1;19751:25:21::0;;;;-1:-1:-1;;;;;19850:15:21;;;19830:18;;;19823:43;19909:14;;19902:22;19882:18;;;19875:50;19973:6;19961:19;19941:18;;;19934:47;20018:15;19997:19;;;19990:44;19723:19;;9943:106:13::1;;;;;;;;;;;;;;;;;::::0;::::1;;;;;;;;;;;;::::0;::::1;;;;;;;;;10141:10;;10152:5;10141:17;;;;;;;:::i;:::-;;;;;;;;;;;;;;:::i;:::-;-1:-1:-1::0;;;;;10068:91:13::1;10076:12;;10089:5;10076:19;;;;;;;:::i;:::-;;;;;;;;;;;;;;:::i;:::-;-1:-1:-1::0;;;;;10068:91:13::1;;10097:12;;10110:5;10097:19;;;;;;;:::i;:::-;;;;;;;10118:14;;10133:5;10118:21;;;;;;;:::i;:::-;;;;;;;;;;;;;;:::i;:::-;10068:91;::::0;;17482:25:21;;;17555:6;17543:19;;;17538:2;17523:18;;17516:47;17455:18;10068:91:13::1;;;;;;;9920:7:::0;::::1;::::0;::::1;:::i;:::-;;;;9867:303;;;;10184:25;10180:80;;;10225:24;:22;:24::i;:::-;9227:1039:::0;;;;;;;;;;:::o;2081:198:4:-;1094:13;:11;:13::i;:::-;-1:-1:-1;;;;;2169:22:4;::::1;2161:73;;;::::0;-1:-1:-1;;;2161:73:4;;20247:2:21;2161:73:4::1;::::0;::::1;20229:21:21::0;20286:2;20266:18;;;20259:30;20325:34;20305:18;;;20298:62;-1:-1:-1;;;20376:18:21;;;20369:36;20422:19;;2161:73:4::1;20045:402:21::0;2161:73:4::1;2244:28;2263:8;2244:18;:28::i;:::-;2081:198:::0;:::o;3834:149:0:-;1094:13:4;:11;:13::i;:::-;3935:41:0::1;3957:8;3967;3935:21;:41::i;:::-;3834:149:::0;;:::o;1359:130:4:-;1247:7;1273:6;-1:-1:-1;;;;;1273:6:4;719:10:11;1422:23:4;1414:68;;;;-1:-1:-1;;;1414:68:4;;20654:2:21;1414:68:4;;;20636:21:21;;;20673:18;;;20666:30;20732:34;20712:18;;;20705:62;20784:18;;1414:68:4;20452:356:21;9555:156:12;9629:7;9679:22;9683:3;9695:5;9679:3;:22::i;:::-;9671:31;9555:156;-1:-1:-1;;;9555:156:12:o;8852:165::-;-1:-1:-1;;;;;8985:23:12;;8932:4;4343:19;;;:12;;;:19;;;;;;:24;;8955:55;4247:127;19632:2077:13;19684:33;19720:30;18918:20;:27;;18831:121;19720:30;19684:66;;19764:25;19793:1;19764:30;19760:67;;19810:7;19632:2077::o;19760:67::-;19836:34;19873:11;-1:-1:-1;;;;;19873:27:13;;:29;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;:::i;:::-;19836:66;;19912:46;20053:13;20048:278;20080:25;20072:5;:33;20048:278;;;20133:34;20181:11;-1:-1:-1;;;;;20181:23:13;;20205:20;20226:5;20205:27;;;;;;;;:::i;:::-;;;;;;;;;20181:52;;;;;;;;;;;;;1389:25:21;;1377:2;1362:18;;1243:177;20181:52:13;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;:::i;:::-;20130:103;;;;;;;;20289:26;20247:68;;;;;:::i;:::-;;;20116:210;20107:7;;;;;:::i;:::-;;;;20048:278;;;-1:-1:-1;20376:36:13;20415:67;20444:38;20415:26;:67;:::i;:::-;20376:106;;20492:26;20606:31;;3246:3;20583:54;;;;:::i;:::-;20522:43;3246:3;;20522:43;:::i;:::-;20521:117;;;;:::i;:::-;20492:146;-1:-1:-1;20648:23:13;3246:3;20675:49;20492:146;20675:28;:49;:::i;:::-;20674:74;;;;:::i;:::-;20648:100;-1:-1:-1;20758:41:13;20802:46;20820:28;20648:100;20802:46;:::i;:::-;20758:90;;20915:13;20910:793;20942:25;20934:5;:33;20910:793;;;20992:44;21039:26;:55;21066:20;21087:5;21066:27;;;;;;;;:::i;:::-;;;;;;;;;;;;;21039:55;;;;;;;;;;;;;;;20992:102;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;21240:31;;20992:102;;-1:-1:-1;21066:27:13;21166:70;;:33;:70;:::i;:::-;21165:106;;;;:::i;:::-;21108:163;;21290:20;21318:19;21341:11;-1:-1:-1;;;;;21341:23:13;;21365:20;21386:5;21365:27;;;;;;;;:::i;:::-;;;;;;;;;21341:52;;;;;;;;;;;;;1389:25:21;;1377:2;1362:18;;1243:177;21341:52:13;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;:::i;:::-;21440:20;;21407:193;;-1:-1:-1;;;21407:193:13;;;;;17046:25:21;;;;17087:18;;;17080:34;;;21440:20:13;17130:18:21;;;17123:50;17221:6;17209:19;;17189:18;;;17182:47;-1:-1:-1;;;;;17266:32:21;;;17245:19;;;17238:61;21285:108:13;;-1:-1:-1;21285:108:13;;-1:-1:-1;21407:11:13;:15;;;;-1:-1:-1;21407:15:13;;-1:-1:-1;;17018:19:21;;;;;-1:-1:-1;21407:193:13;;-1:-1:-1;16775:530:21;21407:193:13;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;-1:-1:-1;;21640:20:13;;21619:73;;1389:25:21;;;21640:20:13;;-1:-1:-1;21619:73:13;;-1:-1:-1;1377:2:21;1362:18;21619:73:13;;;;;;;20978:725;;;;20969:7;;;;;:::i;:::-;;;;20910:793;;;;19674:2035;;;;;;;19632:2077::o;19183:151::-;19275:52;;-1:-1:-1;;;19275:52:13;;-1:-1:-1;;;;;20999:32:21;;;19275:52:13;;;20981:51:21;21075:14;;21068:22;21048:18;;;21041:50;19275:11:13;:32;;;;20954:18:21;;19275:52:13;20813:284:21;2433:187:4;2506:16;2525:6;;-1:-1:-1;;;;;2541:17:4;;;-1:-1:-1;;;;;;2541:17:4;;;;;;2573:40;;2525:6;;;;;;;2573:40;;2506:16;2573:40;2496:124;2433:187;:::o;9098:115:12:-;9161:7;9187:19;9195:3;4537:18;;4455:107;21846:208:13;21946:12;;21938:20;;21930:48;;;;-1:-1:-1;;;21930:48:13;;21304:2:21;21930:48:13;;;21286:21:21;21343:2;21323:18;;;21316:30;-1:-1:-1;;;21362:18:21;;;21355:45;21417:18;;21930:48:13;21102:339:21;21930:48:13;22009:12;;22003:5;;22009:16;;22024:1;;22009:16;:::i;:::-;22003:23;;;;;;;;:::i;:::-;;;;;;;;;21988:5;21994;21988:12;;;;;;;;:::i;:::-;;;;;;;;:38;;;;22036:5;:11;;;;;;;:::i;:::-;;;;;;;;;;;;;;;;;;21846:208;;:::o;4904:118:12:-;4971:7;4997:3;:11;;5009:5;4997:18;;;;;;;;:::i;:::-;;;;;;;;;4990:25;;4904:118;;;;:::o;14:180:21:-;73:6;126:2;114:9;105:7;101:23;97:32;94:52;;;142:1;139;132:12;94:52;-1:-1:-1;165:23:21;;14:180;-1:-1:-1;14:180:21:o;533:118::-;619:5;612:13;605:21;598:5;595:32;585:60;;641:1;638;631:12;656:128;721:20;;750:28;721:20;750:28;:::i;:::-;656:128;;;:::o;789:241::-;845:6;898:2;886:9;877:7;873:23;869:32;866:52;;;914:1;911;904:12;866:52;953:9;940:23;972:28;994:5;972:28;:::i;1425:131::-;-1:-1:-1;;;;;1500:31:21;;1490:42;;1480:70;;1546:1;1543;1536:12;1561:247;1620:6;1673:2;1661:9;1652:7;1648:23;1644:32;1641:52;;;1689:1;1686;1679:12;1641:52;1728:9;1715:23;1747:31;1772:5;1747:31;:::i;2005:309::-;2070:6;2078;2131:2;2119:9;2110:7;2106:23;2102:32;2099:52;;;2147:1;2144;2137:12;2099:52;2183:9;2170:23;2160:33;;2243:2;2232:9;2228:18;2215:32;2256:28;2278:5;2256:28;:::i;:::-;2303:5;2293:15;;;2005:309;;;;;:::o;2319:513::-;2399:6;2407;2415;2423;2476:3;2464:9;2455:7;2451:23;2447:33;2444:53;;;2493:1;2490;2483:12;2444:53;2529:9;2516:23;2506:33;;2586:2;2575:9;2571:18;2558:32;2548:42;;2640:2;2629:9;2625:18;2612:32;2653:28;2675:5;2653:28;:::i;:::-;2700:5;-1:-1:-1;2757:2:21;2742:18;;2729:32;2770:30;2729:32;2770:30;:::i;:::-;2319:513;;;;-1:-1:-1;2319:513:21;;-1:-1:-1;;2319:513:21:o;2837:367::-;2900:8;2910:6;2964:3;2957:4;2949:6;2945:17;2941:27;2931:55;;2982:1;2979;2972:12;2931:55;-1:-1:-1;3005:20:21;;3048:18;3037:30;;3034:50;;;3080:1;3077;3070:12;3034:50;3117:4;3109:6;3105:17;3093:29;;3177:3;3170:4;3160:6;3157:1;3153:14;3145:6;3141:27;3137:38;3134:47;3131:67;;;3194:1;3191;3184:12;3131:67;2837:367;;;;;:::o;3209:437::-;3295:6;3303;3356:2;3344:9;3335:7;3331:23;3327:32;3324:52;;;3372:1;3369;3362:12;3324:52;3412:9;3399:23;3445:18;3437:6;3434:30;3431:50;;;3477:1;3474;3467:12;3431:50;3516:70;3578:7;3569:6;3558:9;3554:22;3516:70;:::i;:::-;3605:8;;3490:96;;-1:-1:-1;3209:437:21;-1:-1:-1;;;;3209:437:21:o;3651:770::-;3770:6;3778;3786;3794;3847:2;3835:9;3826:7;3822:23;3818:32;3815:52;;;3863:1;3860;3853:12;3815:52;3903:9;3890:23;3932:18;3973:2;3965:6;3962:14;3959:34;;;3989:1;3986;3979:12;3959:34;4028:70;4090:7;4081:6;4070:9;4066:22;4028:70;:::i;:::-;4117:8;;-1:-1:-1;4002:96:21;-1:-1:-1;4205:2:21;4190:18;;4177:32;;-1:-1:-1;4221:16:21;;;4218:36;;;4250:1;4247;4240:12;4218:36;;4289:72;4353:7;4342:8;4331:9;4327:24;4289:72;:::i;:::-;3651:770;;;;-1:-1:-1;4380:8:21;-1:-1:-1;;;;3651:770:21:o;4426:587::-;4536:6;4544;4552;4605:2;4593:9;4584:7;4580:23;4576:32;4573:52;;;4621:1;4618;4611:12;4573:52;4661:9;4648:23;4694:18;4686:6;4683:30;4680:50;;;4726:1;4723;4716:12;4680:50;4765:70;4827:7;4818:6;4807:9;4803:22;4765:70;:::i;:::-;4854:8;;-1:-1:-1;4739:96:21;-1:-1:-1;;4939:2:21;4924:18;;4911:32;4952:31;4911:32;4952:31;:::i;:::-;5002:5;4992:15;;;4426:587;;;;;:::o;5018:1561::-;5243:6;5251;5259;5267;5275;5283;5291;5299;5307;5315;5368:3;5356:9;5347:7;5343:23;5339:33;5336:53;;;5385:1;5382;5375:12;5336:53;5425:9;5412:23;5454:18;5495:2;5487:6;5484:14;5481:34;;;5511:1;5508;5501:12;5481:34;5550:70;5612:7;5603:6;5592:9;5588:22;5550:70;:::i;:::-;5639:8;;-1:-1:-1;5524:96:21;-1:-1:-1;5727:2:21;5712:18;;5699:32;;-1:-1:-1;5743:16:21;;;5740:36;;;5772:1;5769;5762:12;5740:36;5811:72;5875:7;5864:8;5853:9;5849:24;5811:72;:::i;:::-;5902:8;;-1:-1:-1;5785:98:21;-1:-1:-1;5990:2:21;5975:18;;5962:32;;-1:-1:-1;6006:16:21;;;6003:36;;;6035:1;6032;6025:12;6003:36;6074:72;6138:7;6127:8;6116:9;6112:24;6074:72;:::i;:::-;6165:8;;-1:-1:-1;6048:98:21;-1:-1:-1;6253:2:21;6238:18;;6225:32;;-1:-1:-1;6269:16:21;;;6266:36;;;6298:1;6295;6288:12;6266:36;;6337:72;6401:7;6390:8;6379:9;6375:24;6337:72;:::i;:::-;6428:8;;-1:-1:-1;6311:98:21;-1:-1:-1;6482:36:21;;-1:-1:-1;6513:3:21;6498:19;;6482:36;:::i;:::-;6472:46;;6537:36;6568:3;6557:9;6553:19;6537:36;:::i;:::-;6527:46;;5018:1561;;;;;;;;;;;;;:::o;9237:382::-;9302:6;9310;9363:2;9351:9;9342:7;9338:23;9334:32;9331:52;;;9379:1;9376;9369:12;9331:52;9418:9;9405:23;9437:31;9462:5;9437:31;:::i;:::-;9487:5;-1:-1:-1;9544:2:21;9529:18;;9516:32;9557:30;9516:32;9557:30;:::i;9624:127::-;9685:10;9680:3;9676:20;9673:1;9666:31;9716:4;9713:1;9706:15;9740:4;9737:1;9730:15;9756:217;9796:1;9822;9812:132;;9866:10;9861:3;9857:20;9854:1;9847:31;9901:4;9898:1;9891:15;9929:4;9926:1;9919:15;9812:132;-1:-1:-1;9958:9:21;;9756:217::o;9978:128::-;10045:9;;;10066:11;;;10063:37;;;10080:18;;:::i;10720:352::-;10922:2;10904:21;;;10961:2;10941:18;;;10934:30;11000;10995:2;10980:18;;10973:58;11063:2;11048:18;;10720:352::o;11077:184::-;11147:6;11200:2;11188:9;11179:7;11175:23;11171:32;11168:52;;;11216:1;11213;11206:12;11168:52;-1:-1:-1;11239:16:21;;11077:184;-1:-1:-1;11077:184:21:o;11266:399::-;11468:2;11450:21;;;11507:2;11487:18;;;11480:30;11546:34;11541:2;11526:18;;11519:62;-1:-1:-1;;;11612:2:21;11597:18;;11590:33;11655:3;11640:19;;11266:399::o;12031:125::-;12096:9;;;12117:10;;;12114:36;;;12130:18;;:::i;12514:127::-;12575:10;12570:3;12566:20;12563:1;12556:31;12606:4;12603:1;12596:15;12630:4;12627:1;12620:15;12646:135;12685:3;12706:17;;;12703:43;;12726:18;;:::i;:::-;-1:-1:-1;12773:1:21;12762:13;;12646:135::o;14024:245::-;14091:6;14144:2;14132:9;14123:7;14119:23;14115:32;14112:52;;;14160:1;14157;14150:12;14112:52;14192:9;14186:16;14211:28;14233:5;14211:28;:::i;15341:117::-;15426:6;15419:5;15415:18;15408:5;15405:29;15395:57;;15448:1;15445;15438:12;15463:785;15606:6;15614;15622;15630;15638;15646;15654;15707:3;15695:9;15686:7;15682:23;15678:33;15675:53;;;15724:1;15721;15714:12;15675:53;15756:9;15750:16;15775:31;15800:5;15775:31;:::i;:::-;15870:2;15855:18;;15849:25;15919:2;15904:18;;15898:25;15825:5;;-1:-1:-1;15849:25:21;-1:-1:-1;15932:33:21;15898:25;15932:33;:::i;:::-;15984:7;15974:17;;;16031:2;16020:9;16016:18;16010:25;16000:35;;16075:3;16064:9;16060:19;16054:26;16044:36;;16120:3;16109:9;16105:19;16099:26;16089:36;;16170:3;16159:9;16155:19;16149:26;16184:32;16208:7;16184:32;:::i;:::-;16235:7;16225:17;;;15463:785;;;;;;;;;;:::o;16253:245::-;16311:6;16364:2;16352:9;16343:7;16339:23;16335:32;16332:52;;;16380:1;16377;16370:12;16332:52;16419:9;16406:23;16438:30;16462:5;16438:30;:::i;17574:168::-;17647:9;;;17678;;17695:15;;;17689:22;;17675:37;17665:71;;17716:18;;:::i;21446:127::-;21507:10;21502:3;21498:20;21495:1;21488:31;21538:4;21535:1;21528:15;21562:4;21559:1;21552:15",
+  "source": "// SPDX-License-Identifier: GPL-3.0\npragma solidity 0.8.17;\n\n/*\n  ______                     ______                                 \n /      \\                   /      \\                                \n|  ▓▓▓▓▓▓\\ ______   ______ |  ▓▓▓▓▓▓\\__   __   __  ______   ______  \n| ▓▓__| ▓▓/      \\ /      \\| ▓▓___\\▓▓  \\ |  \\ |  \\|      \\ /      \\ \n| ▓▓    ▓▓  ▓▓▓▓▓▓\\  ▓▓▓▓▓▓\\\\▓▓    \\| ▓▓ | ▓▓ | ▓▓ \\▓▓▓▓▓▓\\  ▓▓▓▓▓▓\\\n| ▓▓▓▓▓▓▓▓ ▓▓  | ▓▓ ▓▓    ▓▓_\\▓▓▓▓▓▓\\ ▓▓ | ▓▓ | ▓▓/      ▓▓ ▓▓  | ▓▓\n| ▓▓  | ▓▓ ▓▓__/ ▓▓ ▓▓▓▓▓▓▓▓  \\__| ▓▓ ▓▓_/ ▓▓_/ ▓▓  ▓▓▓▓▓▓▓ ▓▓__/ ▓▓\n| ▓▓  | ▓▓ ▓▓    ▓▓\\▓▓     \\\\▓▓    ▓▓\\▓▓   ▓▓   ▓▓\\▓▓    ▓▓ ▓▓    ▓▓\n \\▓▓   \\▓▓ ▓▓▓▓▓▓▓  \\▓▓▓▓▓▓▓ \\▓▓▓▓▓▓  \\▓▓▓▓▓\\▓▓▓▓  \\▓▓▓▓▓▓▓ ▓▓▓▓▓▓▓ \n         | ▓▓                                             | ▓▓      \n         | ▓▓                                             | ▓▓      \n          \\▓▓                                              \\▓▓         \n * App:             https://ApeSwap.finance\n * Medium:          https://ape-swap.medium.com\n * Twitter:         https://twitter.com/ape_swap\n * Telegram:        https://t.me/ape_swap\n * Announcements:   https://t.me/ape_swap_news\n * Reddit:          https://reddit.com/r/ApeSwap\n * Instagram:       https://instagram.com/ApeSwap.finance\n * GitHub:          https://github.com/ApeSwapFinance\n */\n\nimport \"@openzeppelin/contracts/access/Ownable.sol\";\nimport \"@openzeppelin/contracts/token/ERC20/IERC20.sol\";\nimport \"@ape.swap/contracts/contracts/v0.8/access/ContractWhitelist.sol\";\nimport \"./interfaces/IMasterApeV2.sol\";\nimport \"./interfaces/IOwnable.sol\";\nimport \"./interfaces/IRewarderV2.sol\";\n\n/// @title Admin MasterApeV2 proxy contract used to add features to MasterApeV2 admin functions\n/// @dev This contract does NOT handle changing the dev address of the MasterApeV2 because that can only be done\n///  by the dev address itself\n/// @notice Admin functions are separated into onlyOwner and onlyFarmAdmin to separate concerns\ncontract MasterApeAdminV2 is Ownable, ContractWhitelist {\n    struct FixedPercentFarmInfo {\n        uint256 pid;\n        uint256 allocationPercent;\n        bool isActive;\n    }\n\n    /// @notice Farm admin can manage master ape farms and fixed percent farms\n    address public farmAdmin;\n    /// @notice MasterApeV2 Address\n    IMasterApeV2 public immutable masterApeV2;\n    /// @notice Address which is eligible to accept ownership of the MasterApeV2. Set by the current owner.\n    address public pendingMasterApeV2Owner;\n    /// @notice Array of MasterApeV2 pids that are active fixed percent farms\n    uint256[] public fixedPercentFarmPids;\n    /// @notice mapping of MasterApeV2 pids to FixedPercentFarmInfo\n    mapping(uint256 => FixedPercentFarmInfo) public getFixedPercentFarmFromPid;\n    /// @notice The percentages are divided by 10000\n    uint256 public constant PERCENTAGE_PRECISION = 1e4;\n    /// @notice Approaching max fixed farm percentage makes the fixed farm allocations go to infinity\n    uint256 public constant MAX_FIXED_FARM_PERCENTAGE_BUFFER = PERCENTAGE_PRECISION / 10; // 10% Buffer\n    /// @notice Percentage available to additional fixed percent farms\n    uint256 public constant MAX_FIXED_FARM_PERCENTAGE = PERCENTAGE_PRECISION - MAX_FIXED_FARM_PERCENTAGE_BUFFER;\n    /// @notice Total allocation percentage for fixed percent farms\n    uint256 public totalFixedPercentFarmPercentage = 0;\n\n    event SetPendingMasterApeV2Owner(address pendingMasterApeOV2wner);\n    event AddFarm(IERC20 indexed lpToken, uint256 allocation, uint16 depositFeeBP, IRewarderV2 indexed rewarder);\n    event SetFarm(uint256 indexed pid, uint256 allocation, uint16 depositFeeBP, IRewarderV2 indexed rewarder);\n    event SyncFixedPercentFarm(uint256 indexed pid, uint256 allocation);\n    event AddFixedPercentFarm(uint256 indexed pid, uint256 allocationPercentage);\n    event SetFixedPercentFarm(uint256 indexed pid, uint256 previousAllocationPercentage, uint256 allocationPercentage);\n    event TransferredFarmAdmin(address indexed previousFarmAdmin, address indexed newFarmAdmin);\n    event SweepWithdraw(address indexed to, IERC20 indexed token, uint256 amount);\n\n    modifier onlyFarmAdmin() {\n        require(msg.sender == farmAdmin, \"must be called by farm admin\");\n        _;\n    }\n\n    constructor(IMasterApeV2 _masterApeV2, address _farmAdmin) {\n        masterApeV2 = _masterApeV2;\n        farmAdmin = _farmAdmin;\n    }\n\n    /** External Functions  */\n\n    /// @notice Set an address as the pending admin of the MasterApeV2. The address must accept to take ownership.\n    /// @param _pendingMasterApeV2Owner Address to set as the pending owner of the MasterApeV2.\n    function setPendingMasterApeV2Owner(address _pendingMasterApeV2Owner) external onlyOwner {\n        pendingMasterApeV2Owner = _pendingMasterApeV2Owner;\n        emit SetPendingMasterApeV2Owner(pendingMasterApeV2Owner);\n    }\n\n    /// @notice The pendingMasterApeOwner takes ownership through this call\n    /// @dev Transferring MasterApeV2 ownership away from this contract renders this contract useless.\n    function acceptMasterApeV2Ownership() external {\n        require(msg.sender == pendingMasterApeV2Owner, \"not pending owner\");\n        IOwnable(address(masterApeV2)).transferOwnership(pendingMasterApeV2Owner);\n        pendingMasterApeV2Owner = address(0);\n    }\n\n    /// @notice Set an address as the pending admin of the MasterApeV1. The address must accept to take ownership.\n    /// @param _pendingMasterApeV1Owner Address to set as the pending owner of the MasterApeV2.\n    function setPendingMasterApeV1Owner(address _pendingMasterApeV1Owner) external onlyOwner {\n        masterApeV2.setPendingMasterApeV1Owner(_pendingMasterApeV1Owner);\n    }\n\n    /// @notice Helper function to update MasterApeV2 pools in batches\n    /// @dev The MasterApeV2 massUpdatePools function uses a for loop which in the future\n    ///  could reach the block gas limit making it in-callable.\n    /// @param pids Array of MasterApeV2 pids to update\n    function batchUpdateMasterApePools(uint256[] calldata pids) external {\n        for (uint256 pidIndex = 0; pidIndex < pids.length; pidIndex++) {\n            masterApeV2.updatePool(pids[pidIndex]);\n        }\n    }\n\n    /// @notice An external function to update MAv2 Emission rate.\n    /// @param _bananaPerSecond how many BANANAs to mint per second\n    /// @param _withUpdate flag to call massUpdatePool before update\n    function updateEmissionRate(uint256 _bananaPerSecond, bool _withUpdate) external onlyOwner {\n        masterApeV2.updateEmissionRate(_bananaPerSecond, _withUpdate);\n    }\n\n    /// @notice An external function to update the BANANA hard cap.\n    /// @param _hardCap new BANANA hard cap\n    function updateHardCap(uint256 _hardCap) external onlyOwner {\n        masterApeV2.updateHardCap(_hardCap);\n    }\n\n    /// @notice enables smart contract whitelist on MAv2.\n    function setWhitelistEnabled(bool _enabled) external override onlyOwner {\n        masterApeV2.setWhitelistEnabled(_enabled);\n    }\n\n    /// @notice An external function to sweep accidental ERC20 transfers to this contract.\n    ///   Tokens are sent to owner\n    /// @param _tokens Array of ERC20 addresses to sweep\n    /// @param _to Address to send tokens to\n    function sweepTokens(IERC20[] calldata _tokens, address _to) external onlyOwner {\n        for (uint256 index = 0; index < _tokens.length; index++) {\n            IERC20 token = _tokens[index];\n            uint256 balance = token.balanceOf(address(this));\n            token.transfer(_to, balance);\n            emit SweepWithdraw(_to, token, balance);\n        }\n    }\n\n    /// @notice Transfer the farmAdmin to a new address\n    /// @param _newFarmAdmin Address of new farmAdmin\n    function transferFarmAdminOwnership(address _newFarmAdmin) external onlyFarmAdmin {\n        require(_newFarmAdmin != address(0), \"cannot transfer farm admin to address(0)\");\n        address previousFarmAdmin = farmAdmin;\n        farmAdmin = _newFarmAdmin;\n        emit TransferredFarmAdmin(previousFarmAdmin, farmAdmin);\n    }\n\n    /// @notice Update pool allocations based on fixed percentage farm percentages\n    function syncFixedPercentFarms() external onlyFarmAdmin {\n        require(getNumberOfFixedPercentFarms() > 0, \"no fixed farms added\");\n        _syncFixedPercentFarms();\n    }\n\n    /// @notice Add a batch of farms to the MasterApeV2 contract\n    /// @dev syncs fixed percentage farms after update\n    /// @param _allocPoints Array of allocation points to set each address\n    /// @param _stakeTokens Array of stake tokens\n    /// @param _depositFeesBP Array of deposit fee basis points\n    /// @param _rewarders Array of rewarders can be address(0) for no rewarder\n    /// @param _withMassPoolUpdate Mass update pools before update\n    /// @param _syncFixedPercentageFarms Sync fixed percentage farm allocations\n    function addMasterApeFarms(\n        uint256[] calldata _allocPoints,\n        IERC20[] calldata _stakeTokens,\n        uint16[] calldata _depositFeesBP,\n        IRewarderV2[] calldata _rewarders,\n        bool _withMassPoolUpdate,\n        bool _syncFixedPercentageFarms\n    ) external onlyFarmAdmin {\n        require(\n            _allocPoints.length == _stakeTokens.length &&\n                _allocPoints.length == _depositFeesBP.length &&\n                _allocPoints.length == _rewarders.length,\n            \"array length mismatch\"\n        );\n\n        if (_withMassPoolUpdate) {\n            masterApeV2.massUpdatePools();\n        }\n\n        for (uint256 index = 0; index < _allocPoints.length; index++) {\n            masterApeV2.add(_allocPoints[index], _stakeTokens[index], false, _depositFeesBP[index], _rewarders[index]);\n            emit AddFarm(_stakeTokens[index], _allocPoints[index], _depositFeesBP[index], _rewarders[index]);\n        }\n\n        if (_syncFixedPercentageFarms) {\n            _syncFixedPercentFarms();\n        }\n    }\n\n    /// @notice Set a batch of farms to the MasterApeV2 contract\n    /// @dev syncs fixed percentage farms after update\n    /// @param _pids Array of MasterApeV2 pool ids to update\n    /// @param _allocPoints Array of allocation points to set each pid\n    /// @param _depositFeesBP Array of deposit fees for each pid. Pass an empty array to leave the same value.\n    /// @param _rewarders Array of rewarders to set for each pid. Pass an empty array to leave the same value.\n    /// @param _withMassPoolUpdate Mass update pools before update\n    /// @param _syncFixedPercentageFarms Sync fixed percentage farm allocations\n    function setMasterApeFarms(\n        uint256[] calldata _pids,\n        uint256[] calldata _allocPoints,\n        uint16[] calldata _depositFeesBP,\n        IRewarderV2[] calldata _rewarders,\n        bool _withMassPoolUpdate,\n        bool _syncFixedPercentageFarms\n    ) external onlyFarmAdmin {\n        require(_pids.length == _allocPoints.length, \"allocPoints length mismatch\");\n        // Check Deposit fees\n        uint256 depositFeesLength = _depositFeesBP.length;\n        if(_pids.length != depositFeesLength) {\n            require(depositFeesLength == 0, \"depositFeesBP length mismatch\");\n        }\n        // Check rewarder addresses\n        uint256 rewarderLength = _rewarders.length;\n        if(_pids.length != rewarderLength) {\n            require(rewarderLength == 0, \"rewarder length mismatch\");\n        }\n\n        if (_withMassPoolUpdate) {\n            masterApeV2.massUpdatePools();\n        }\n\n        uint256 pidIndexes = masterApeV2.poolLength();\n        for (uint256 index = 0; index < _pids.length; index++) {\n            uint256 currentPid = _pids[index];\n            require(currentPid < pidIndexes, \"pid is out of bounds of MasterApeV2\");\n            uint256 currentAllocPoint = _allocPoints[index];\n            // If no fees or rewarders are passed then this pulls the current from MasterApeV2\n            uint16 currentDepositFeeBP;\n            IRewarderV2 currentRewarder;\n            if(depositFeesLength == 0 || rewarderLength == 0) {\n                // If no length was passed then fill in these values from MasterApeV2\n                ( , , currentRewarder, , , , currentDepositFeeBP) = masterApeV2.getPoolInfo(currentPid);\n            } \n            // Update the deposit fee if passed\n            if(depositFeesLength != 0) {\n                currentDepositFeeBP = _depositFeesBP[index];\n            }\n            // Update the rewarder if passed\n            if(rewarderLength != 0) {\n                currentRewarder = _rewarders[index];\n            }\n\n            // Set all pids with no mass update\n            masterApeV2.set(currentPid, currentAllocPoint, false, currentDepositFeeBP, currentRewarder);\n            emit SetFarm(currentPid, currentAllocPoint, currentDepositFeeBP, currentRewarder);\n        }\n\n        if (_syncFixedPercentageFarms) {\n            _syncFixedPercentFarms();\n        }\n    }\n\n    /// @notice Add a new fixed percentage farm allocation\n    /// @dev Must be a new MasterApeV2 pid and below the max fixed percentage\n    /// @param _pid MasterApeV2 pid to create a fixed percentage farm for\n    /// @param _allocPercentage Percentage based in PERCENTAGE_PRECISION\n    /// @param _withMassPoolUpdate Mass update pools before update\n    /// @param _syncFixedPercentageFarms Sync fixed percentage farm allocations\n    function addFixedPercentFarmAllocation(\n        uint256 _pid,\n        uint256 _allocPercentage,\n        bool _withMassPoolUpdate,\n        bool _syncFixedPercentageFarms\n    ) external onlyFarmAdmin {\n        require(_pid < masterApeV2.poolLength(), \"pid is out of bounds of MasterApeV2\");\n        require(!getFixedPercentFarmFromPid[_pid].isActive, \"fixed percent farm already added\");\n        uint256 newTotalFixedPercentage = totalFixedPercentFarmPercentage + _allocPercentage;\n        require(newTotalFixedPercentage <= MAX_FIXED_FARM_PERCENTAGE, \"allocation out of bounds\");\n\n        totalFixedPercentFarmPercentage = newTotalFixedPercentage;\n        getFixedPercentFarmFromPid[_pid] = FixedPercentFarmInfo(_pid, _allocPercentage, true);\n        fixedPercentFarmPids.push(_pid);\n        emit AddFixedPercentFarm(_pid, _allocPercentage);\n\n        if (_withMassPoolUpdate) {\n            masterApeV2.massUpdatePools();\n        }\n\n        if (_syncFixedPercentageFarms) {\n            _syncFixedPercentFarms();\n        }\n    }\n\n    /// @notice Update/disable a new fixed percentage farm allocation\n    /// @dev If the farm allocation is 0, then the fixed farm will be disabled, but the allocation will be unchanged.\n    /// @param _pid MasterApeV2 pid linked to fixed percentage farm to update\n    /// @param _allocPercentage Percentage based in PERCENTAGE_PRECISION\n    /// @param _withMassPoolUpdate Mass update pools before update\n    /// @param _syncFixedPercentageFarms Sync fixed percentage farm allocations\n    function setFixedPercentFarmAllocation(\n        uint256 _pid,\n        uint256 _allocPercentage,\n        bool _withMassPoolUpdate,\n        bool _syncFixedPercentageFarms\n    ) external onlyFarmAdmin {\n        FixedPercentFarmInfo storage fixedPercentFarm = getFixedPercentFarmFromPid[_pid];\n        require(fixedPercentFarm.isActive, \"not a valid farm pid\");\n        uint256 newTotalFixedPercentFarmPercentage = \n            (_allocPercentage + totalFixedPercentFarmPercentage) - fixedPercentFarm.allocationPercent;\n        require(newTotalFixedPercentFarmPercentage <= MAX_FIXED_FARM_PERCENTAGE, \"new allocation out of bounds\");\n\n        totalFixedPercentFarmPercentage = newTotalFixedPercentFarmPercentage;\n        uint256 previousAllocation = fixedPercentFarm.allocationPercent;\n        fixedPercentFarm.allocationPercent = _allocPercentage;\n\n        if (_allocPercentage == 0) {\n            // Disable fixed percentage farm and MasterApeV2 allocation\n            fixedPercentFarm.isActive = false;\n            // Remove fixed percent farm from pid array\n            for (uint256 index = 0; index < fixedPercentFarmPids.length; index++) {\n                if (fixedPercentFarmPids[index] == _pid) {\n                    _removeFromArray(index, fixedPercentFarmPids);\n                    break;\n                }\n            }\n            // NOTE: The MasterApeV2 pool allocation is left unchanged to not disable a fixed farm\n            //  in case the creation was an accident.\n        }\n        emit SetFixedPercentFarm(_pid, previousAllocation, _allocPercentage);\n\n        if (_withMassPoolUpdate) {\n            masterApeV2.massUpdatePools();\n        }\n\n        if (_syncFixedPercentageFarms) {\n            _syncFixedPercentFarms();\n        }\n    }\n\n    /// @notice Obtain detailed allocation information regarding a MasterApeV2 pool\n    /// @param pid MasterApeV2 pid to pull detailed information from\n    /// @return lpToken Address of the stake token for this pool\n    /// @return poolAllocationPoint Allocation points for this pool\n    /// @return totalAllocationPoints Total allocation points across all pools\n    /// @return poolAllocationPercentMantissa Percentage of pool allocation points to total multiplied by 1e18\n    /// @return poolBananaPerSecond Amount of BANANA given to the pool per second\n    /// @return poolBananaPerDay Amount of BANANA given to the pool per day\n    /// @return poolBananaPerMonth Amount of BANANA given to the pool per month\n    function getDetailedPoolInfo(uint256 pid)\n        external\n        view\n        returns (\n            address lpToken,\n            uint256 poolAllocationPoint,\n            uint256 totalAllocationPoints,\n            uint256 poolAllocationPercentMantissa,\n            uint256 poolBananaPerSecond,\n            uint256 poolBananaPerDay,\n            uint256 poolBananaPerMonth,\n            uint16 depositFeeBP,\n            IRewarderV2 rewarder\n        )\n    {\n        uint256 bananaPerSecond = masterApeV2.bananaPerSecond();\n        (lpToken, poolAllocationPoint, rewarder, , , , depositFeeBP) = masterApeV2.getPoolInfo(pid);\n        totalAllocationPoints = masterApeV2.totalAllocPoint();\n        poolAllocationPercentMantissa = (poolAllocationPoint * 1e18) / totalAllocationPoints;\n        poolBananaPerSecond = (bananaPerSecond * poolAllocationPercentMantissa) / 1e18;\n        // Assumes a 3 second block time\n        poolBananaPerDay = poolBananaPerSecond * 1 days;\n        poolBananaPerMonth = poolBananaPerDay * 30;\n    }\n\n    /** Public Functions  */\n\n    /// @notice Get the number of registered fixed percentage farms\n    /// @return Number of active fixed percentage farms\n    function getNumberOfFixedPercentFarms() public view returns (uint256) {\n        return fixedPercentFarmPids.length;\n    }\n\n    /** Internal Functions  */\n\n    /// @notice Enable or disable a contract address on the whitelist\n    /// @param _address Address to update on whitelist\n    /// @param _enabled Set if the whitelist is enabled or disabled\n    function _setContractWhitelist(address _address, bool _enabled) internal override {\n        masterApeV2.setContractWhitelist(_address, _enabled);\n    }\n\n    /** Private Functions  */\n\n    /// @notice Run through fixed percentage farm allocations and set MasterApeV2 allocations to match the percentage.\n    /// @dev The MasterApeV2 contract manages the BANANA pool percentage on its own\n    /// which is accounted for in the calculations below.\n    function _syncFixedPercentFarms() private {\n        uint256 numberOfFixedPercentFarms = getNumberOfFixedPercentFarms();\n        if (numberOfFixedPercentFarms == 0) {\n            return;\n        }\n        uint256 masterApeV2TotalAllocation = masterApeV2.totalAllocPoint();\n        uint256 currentTotalFixedPercentFarmAllocation = 0;\n        // Calculate the total allocation points of the fixed percent farms\n        for (uint256 index = 0; index < numberOfFixedPercentFarms; index++) {\n            (, uint256 fixedPercentFarmAllocation, , , , , ) = masterApeV2.getPoolInfo(fixedPercentFarmPids[index]);\n            currentTotalFixedPercentFarmAllocation += fixedPercentFarmAllocation;\n        }\n        // Calculate alloted allocations\n        uint256 nonPercentageBasedAllocation = masterApeV2TotalAllocation - currentTotalFixedPercentFarmAllocation;\n        uint256 percentageIncrease = (PERCENTAGE_PRECISION * PERCENTAGE_PRECISION) / \n            (PERCENTAGE_PRECISION - totalFixedPercentFarmPercentage);\n        uint256 finalAllocation = (nonPercentageBasedAllocation * percentageIncrease) / PERCENTAGE_PRECISION;\n        uint256 allotedFixedPercentFarmAllocation = finalAllocation - nonPercentageBasedAllocation;\n        // Update fixed percentage farm allocations\n        for (uint256 index = 0; index < numberOfFixedPercentFarms; index++) {\n            FixedPercentFarmInfo memory fixedPercentFarm = getFixedPercentFarmFromPid[fixedPercentFarmPids[index]];\n            uint256 newFixedPercentFarmAllocation = \n                (allotedFixedPercentFarmAllocation * fixedPercentFarm.allocationPercent) / totalFixedPercentFarmPercentage;\n            (, , IRewarderV2 rewarder, , , , uint16 depositFeeBP) = masterApeV2.getPoolInfo(fixedPercentFarmPids[index]);\n            masterApeV2.set(\n                fixedPercentFarm.pid,\n                newFixedPercentFarmAllocation,\n                false,\n                depositFeeBP,\n                rewarder\n            );\n            emit SyncFixedPercentFarm(fixedPercentFarm.pid, newFixedPercentFarmAllocation);\n        }\n    }\n\n    /// @notice Remove an index from an array by copying the last element to the index\n    /// and then removing the last element.\n    function _removeFromArray(uint256 index, uint256[] storage array) private {\n        require(index < array.length, \"Incorrect index\");\n        array[index] = array[array.length - 1];\n        array.pop();\n    }\n}\n",
+  "compiler": {
+    "name": "solc",
+    "version": "0.8.17+commit.8df45f5f.Emscripten.clang"
+  },
+  "networks": {},
+  "schemaVersion": "3.4.10",
+  "updatedAt": "2022-12-15T03:59:40.719Z",
+  "devdoc": {
+    "details": "This contract does NOT handle changing the dev address of the MasterApeV2 because that can only be done  by the dev address itself",
+    "kind": "dev",
+    "methods": {
+      "acceptMasterApeV2Ownership()": {
+        "details": "Transferring MasterApeV2 ownership away from this contract renders this contract useless."
+      },
+      "addFixedPercentFarmAllocation(uint256,uint256,bool,bool)": {
+        "details": "Must be a new MasterApeV2 pid and below the max fixed percentage",
+        "params": {
+          "_allocPercentage": "Percentage based in PERCENTAGE_PRECISION",
+          "_pid": "MasterApeV2 pid to create a fixed percentage farm for",
+          "_syncFixedPercentageFarms": "Sync fixed percentage farm allocations",
+          "_withMassPoolUpdate": "Mass update pools before update"
+        }
+      },
+      "addMasterApeFarms(uint256[],address[],uint16[],address[],bool,bool)": {
+        "details": "syncs fixed percentage farms after update",
+        "params": {
+          "_allocPoints": "Array of allocation points to set each address",
+          "_depositFeesBP": "Array of deposit fee basis points",
+          "_rewarders": "Array of rewarders can be address(0) for no rewarder",
+          "_stakeTokens": "Array of stake tokens",
+          "_syncFixedPercentageFarms": "Sync fixed percentage farm allocations",
+          "_withMassPoolUpdate": "Mass update pools before update"
+        }
+      },
+      "batchUpdateMasterApePools(uint256[])": {
+        "details": "The MasterApeV2 massUpdatePools function uses a for loop which in the future  could reach the block gas limit making it in-callable.",
+        "params": {
+          "pids": "Array of MasterApeV2 pids to update"
+        }
+      },
+      "getDetailedPoolInfo(uint256)": {
+        "params": {
+          "pid": "MasterApeV2 pid to pull detailed information from"
+        },
+        "returns": {
+          "lpToken": "Address of the stake token for this pool",
+          "poolAllocationPercentMantissa": "Percentage of pool allocation points to total multiplied by 1e18",
+          "poolAllocationPoint": "Allocation points for this pool",
+          "poolBananaPerDay": "Amount of BANANA given to the pool per day",
+          "poolBananaPerMonth": "Amount of BANANA given to the pool per month",
+          "poolBananaPerSecond": "Amount of BANANA given to the pool per second",
+          "totalAllocationPoints": "Total allocation points across all pools"
+        }
+      },
+      "getNumberOfFixedPercentFarms()": {
+        "returns": {
+          "_0": "Number of active fixed percentage farms"
+        }
+      },
+      "getWhitelistAtIndex(uint256)": {
+        "params": {
+          "_index": "Index to query"
+        }
+      },
+      "isWhitelisted(address)": {
+        "params": {
+          "_address": "Address to query"
+        }
+      },
+      "owner()": {
+        "details": "Returns the address of the current owner."
+      },
+      "renounceOwnership()": {
+        "details": "Leaves the contract without owner. It will not be possible to call `onlyOwner` functions anymore. Can only be called by the current owner. NOTE: Renouncing ownership will leave the contract without an owner, thereby removing any functionality that is only available to the owner."
+      },
+      "setBatchContractWhitelist(address[],bool[])": {
+        "params": {
+          "_addresses": "Addressed to update on whitelist",
+          "_enabled": "Set if the whitelist is enabled or disabled for each address passed"
+        }
+      },
+      "setContractWhitelist(address,bool)": {
+        "params": {
+          "_address": "Address to update on whitelist",
+          "_enabled": "Set if the whitelist is enabled or disabled"
+        }
+      },
+      "setFixedPercentFarmAllocation(uint256,uint256,bool,bool)": {
+        "details": "If the farm allocation is 0, then the fixed farm will be disabled, but the allocation will be unchanged.",
+        "params": {
+          "_allocPercentage": "Percentage based in PERCENTAGE_PRECISION",
+          "_pid": "MasterApeV2 pid linked to fixed percentage farm to update",
+          "_syncFixedPercentageFarms": "Sync fixed percentage farm allocations",
+          "_withMassPoolUpdate": "Mass update pools before update"
+        }
+      },
+      "setMasterApeFarms(uint256[],uint256[],uint16[],address[],bool,bool)": {
+        "details": "syncs fixed percentage farms after update",
+        "params": {
+          "_allocPoints": "Array of allocation points to set each pid",
+          "_depositFeesBP": "Array of deposit fees for each pid. Pass an empty array to leave the same value.",
+          "_pids": "Array of MasterApeV2 pool ids to update",
+          "_rewarders": "Array of rewarders to set for each pid. Pass an empty array to leave the same value.",
+          "_syncFixedPercentageFarms": "Sync fixed percentage farm allocations",
+          "_withMassPoolUpdate": "Mass update pools before update"
+        }
+      },
+      "setPendingMasterApeV1Owner(address)": {
+        "params": {
+          "_pendingMasterApeV1Owner": "Address to set as the pending owner of the MasterApeV2."
+        }
+      },
+      "setPendingMasterApeV2Owner(address)": {
+        "params": {
+          "_pendingMasterApeV2Owner": "Address to set as the pending owner of the MasterApeV2."
+        }
+      },
+      "sweepTokens(address[],address)": {
+        "params": {
+          "_to": "Address to send tokens to",
+          "_tokens": "Array of ERC20 addresses to sweep"
+        }
+      },
+      "transferFarmAdminOwnership(address)": {
+        "params": {
+          "_newFarmAdmin": "Address of new farmAdmin"
+        }
+      },
+      "transferOwnership(address)": {
+        "details": "Transfers ownership of the contract to a new account (`newOwner`). Can only be called by the current owner."
+      },
+      "updateEmissionRate(uint256,bool)": {
+        "params": {
+          "_bananaPerSecond": "how many BANANAs to mint per second",
+          "_withUpdate": "flag to call massUpdatePool before update"
+        }
+      },
+      "updateHardCap(uint256)": {
+        "params": {
+          "_hardCap": "new BANANA hard cap"
+        }
+      }
+    },
+    "title": "Admin MasterApeV2 proxy contract used to add features to MasterApeV2 admin functions",
+    "version": 1
+  },
+  "userdoc": {
+    "kind": "user",
+    "methods": {
+      "MAX_FIXED_FARM_PERCENTAGE()": {
+        "notice": "Percentage available to additional fixed percent farms"
+      },
+      "MAX_FIXED_FARM_PERCENTAGE_BUFFER()": {
+        "notice": "Approaching max fixed farm percentage makes the fixed farm allocations go to infinity"
+      },
+      "PERCENTAGE_PRECISION()": {
+        "notice": "The percentages are divided by 10000"
+      },
+      "acceptMasterApeV2Ownership()": {
+        "notice": "The pendingMasterApeOwner takes ownership through this call"
+      },
+      "addFixedPercentFarmAllocation(uint256,uint256,bool,bool)": {
+        "notice": "Add a new fixed percentage farm allocation"
+      },
+      "addMasterApeFarms(uint256[],address[],uint16[],address[],bool,bool)": {
+        "notice": "Add a batch of farms to the MasterApeV2 contract"
+      },
+      "batchUpdateMasterApePools(uint256[])": {
+        "notice": "Helper function to update MasterApeV2 pools in batches"
+      },
+      "farmAdmin()": {
+        "notice": "Farm admin can manage master ape farms and fixed percent farms"
+      },
+      "fixedPercentFarmPids(uint256)": {
+        "notice": "Array of MasterApeV2 pids that are active fixed percent farms"
+      },
+      "getDetailedPoolInfo(uint256)": {
+        "notice": "Obtain detailed allocation information regarding a MasterApeV2 pool"
+      },
+      "getFixedPercentFarmFromPid(uint256)": {
+        "notice": "mapping of MasterApeV2 pids to FixedPercentFarmInfo"
+      },
+      "getNumberOfFixedPercentFarms()": {
+        "notice": "Get the number of registered fixed percentage farms"
+      },
+      "getWhitelistAtIndex(uint256)": {
+        "notice": "Find the address on the whitelist of the provided index"
+      },
+      "getWhitelistLength()": {
+        "notice": "Get the number of addresses on the whitelist"
+      },
+      "isWhitelisted(address)": {
+        "notice": "Check if an address is whitelisted"
+      },
+      "masterApeV2()": {
+        "notice": "MasterApeV2 Address"
+      },
+      "pendingMasterApeV2Owner()": {
+        "notice": "Address which is eligible to accept ownership of the MasterApeV2. Set by the current owner."
+      },
+      "setBatchContractWhitelist(address[],bool[])": {
+        "notice": "Enable or disable contract addresses on the whitelist"
+      },
+      "setContractWhitelist(address,bool)": {
+        "notice": "Enable or disable a contract address on the whitelist"
+      },
+      "setFixedPercentFarmAllocation(uint256,uint256,bool,bool)": {
+        "notice": "Update/disable a new fixed percentage farm allocation"
+      },
+      "setMasterApeFarms(uint256[],uint256[],uint16[],address[],bool,bool)": {
+        "notice": "Set a batch of farms to the MasterApeV2 contract"
+      },
+      "setPendingMasterApeV1Owner(address)": {
+        "notice": "Set an address as the pending admin of the MasterApeV1. The address must accept to take ownership."
+      },
+      "setPendingMasterApeV2Owner(address)": {
+        "notice": "Set an address as the pending admin of the MasterApeV2. The address must accept to take ownership."
+      },
+      "setWhitelistEnabled(bool)": {
+        "notice": "enables smart contract whitelist on MAv2."
+      },
+      "sweepTokens(address[],address)": {
+        "notice": "An external function to sweep accidental ERC20 transfers to this contract.   Tokens are sent to owner"
+      },
+      "syncFixedPercentFarms()": {
+        "notice": "Update pool allocations based on fixed percentage farm percentages"
+      },
+      "totalFixedPercentFarmPercentage()": {
+        "notice": "Total allocation percentage for fixed percent farms"
+      },
+      "transferFarmAdminOwnership(address)": {
+        "notice": "Transfer the farmAdmin to a new address"
+      },
+      "updateEmissionRate(uint256,bool)": {
+        "notice": "An external function to update MAv2 Emission rate."
+      },
+      "updateHardCap(uint256)": {
+        "notice": "An external function to update the BANANA hard cap."
+      },
+      "whitelistEnabled()": {
+        "notice": "marks if a contract whitelist is enabled."
+      }
+    },
+    "notice": "Admin functions are separated into onlyOwner and onlyFarmAdmin to separate concerns",
+    "version": 1
+  }
+}

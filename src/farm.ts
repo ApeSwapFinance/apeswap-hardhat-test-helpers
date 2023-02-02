@@ -74,10 +74,22 @@ export async function deployMockFarm(
 export async function addPoolsToFarm(
   [owner]: [SignerWithAddress],
   masterApe: MasterApe,
-  dexPairs: Contract[]
-) {
-  const BASE_ALLOCATION = 100
-  for (const dexPair of dexPairs) {
-    await masterApe.connect(owner).add(BASE_ALLOCATION, dexPair.address, false)
+  dexPairs: Contract[],
+  options?: {
+    allocations?: number[]
   }
+): Promise<Record<string, number>> {
+  const DEFAULT_ALLOCATION = 100
+  const poolIds: Record<string, number> = {}
+  let nextPid = (await masterApe.poolLength()).toNumber();
+  for (let index = 0; index < dexPairs.length; index++) {
+    const dexPair = dexPairs[index]; 
+    const allocation = options?.allocations
+      ? options?.allocations[index]
+      : DEFAULT_ALLOCATION
+    await masterApe.connect(owner).add(allocation, dexPair.address, false);
+    poolIds[dexPair.address] = nextPid;
+    nextPid++;
+  }
+  return poolIds;
 }

@@ -2,6 +2,7 @@ import { HardhatUserConfig } from 'hardhat/config'
 import '@nomicfoundation/hardhat-toolbox'
 import 'solidity-coverage'
 import 'hardhat-docgen'
+import '@typechain/hardhat'
 
 import { task, types } from 'hardhat/config'
 import { TASK_TEST } from 'hardhat/builtin-tasks/task-names'
@@ -10,6 +11,7 @@ import { HardhatRuntimeEnvironment, NetworkUserConfig } from 'hardhat/types'
 import { Task, Verifier, Network } from './hardhat'
 import { getEnv, Logger, testRunner } from './hardhat/utils'
 import solhintConfig from "./solhint.config"
+
 
 /**
  * Deploy contracts based on a directory ID in tasks/
