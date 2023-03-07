@@ -20,6 +20,8 @@ import {
   ERC20Mock__factory,
   WNative,
   WNative__factory,
+  ApeFactory,
+  ApeRouter,
 } from '../typechain-types'
 
 /**
@@ -128,4 +130,50 @@ export async function deployMockDex(
     mockTokens,
     dexPairs,
   }
+}
+
+export async function addLiquidity(
+  ethers: HardhatEthersHelpers,
+  dexFactory: ApeFactory,
+  dexRouter: ApeRouter,
+  mockTokens: ERC20Mock[],
+  mockWBNB: WNative,
+  [owner, alice]: SignerWithAddress[]
+) {
+  const ApePair = (await ethers.getContractFactory(
+    ApePairBuild.abi,
+    ApePairBuild.bytecode
+  )) as ApePair__factory
+
+  const dexPairs: ApePair[] = []
+  const TOKEN_BASE_BALANCE = ether('1000')
+  const WBNB_BASE_BALANCE = ether('1')
+  for (let index = 0; index < mockTokens.length; index++) {
+    // Mint pair token
+    const mockToken = mockTokens[index]
+
+    await mockToken.connect(owner).mint(TOKEN_BASE_BALANCE)
+    await mockToken
+      .connect(owner)
+      .approve(dexRouter.address, TOKEN_BASE_BALANCE)
+
+    await dexRouter.connect(owner).addLiquidityETH(
+      mockToken.address, // token
+      TOKEN_BASE_BALANCE, // amountTokenDesired
+      0, // amountTokenMin
+      0, // amountETHMin
+      alice.address, // to
+      '9999999999', // deadline
+      {
+        value: WBNB_BASE_BALANCE, // Adding ETH liquidity which gets exchanged for WETH
+      }
+    )
+
+    const pairCreated = await ApePair.attach(
+      await dexFactory.getPair(mockToken.address, mockWBNB.address)
+    )
+
+    dexPairs.push(pairCreated)
+  }
+  return dexPairs
 }
