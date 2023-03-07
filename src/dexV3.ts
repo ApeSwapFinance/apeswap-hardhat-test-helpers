@@ -25,6 +25,7 @@ import {
   SwapRouter__factory,
   NonfungiblePositionManager__factory,
   NonfungibleTokenPositionDescriptor__factory,
+  WNative,
 } from '../typechain-types'
 
 /**
@@ -41,7 +42,8 @@ export async function deployMockDex(
     SignerWithAddress,
     SignerWithAddress
   ],
-  numPairs = 2
+  numPairs = 2,
+  mockWBNBoverwrite: WNative | null = null
 ) {
   const SwapRouter = (await ethers.getContractFactoryFromArtifact(
     SwapRouterBuild
@@ -80,7 +82,12 @@ export async function deployMockDex(
   const dexFactory = await uniV3Factory.connect(owner).deploy()
 
   // Setup pairs
-  const mockWBNB = await WNative.connect(owner).deploy()
+  let mockWBNB: WNative
+  if (mockWBNBoverwrite != null) {
+    mockWBNB = mockWBNBoverwrite
+  } else {
+    mockWBNB = await WNative.connect(owner).deploy()
+  }
   const positionDescriptor = await nonfungibleTokenPositionDescriptor
     .connect(owner)
     .deploy(

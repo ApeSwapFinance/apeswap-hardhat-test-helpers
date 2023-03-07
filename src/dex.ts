@@ -18,6 +18,7 @@ import {
   ApePair__factory,
   ERC20Mock,
   ERC20Mock__factory,
+  WNative,
   WNative__factory,
 } from '../typechain-types'
 
@@ -35,7 +36,8 @@ export async function deployMockDex(
     SignerWithAddress,
     SignerWithAddress
   ],
-  numPairs = 2
+  numPairs = 2,
+  mockWBNBoverwrite: WNative | null = null
 ) {
   const ApeFactory = (await ethers.getContractFactory(
     ApeFactoryBuild.abi,
@@ -65,7 +67,12 @@ export async function deployMockDex(
   const dexFactory = await ApeFactory.connect(owner).deploy(feeTo.address)
 
   // Setup pairs
-  const mockWBNB = await WNative.connect(owner).deploy()
+  let mockWBNB: WNative
+  if (mockWBNBoverwrite != null) {
+    mockWBNB = mockWBNBoverwrite
+  } else {
+    mockWBNB = await WNative.connect(owner).deploy()
+  }
   const dexRouter = await ApeRouter.connect(owner).deploy(
     dexFactory.address,
     mockWBNB.address
@@ -96,10 +103,9 @@ export async function deployMockDex(
       }
     )
 
-    const pairCreated = await ApePair.attach(await dexFactory.getPair(
-      mockToken.address,
-      mockWBNB.address
-    ));
+    const pairCreated = await ApePair.attach(
+      await dexFactory.getPair(mockToken.address, mockWBNB.address)
+    )
 
     // NOTE: Alternative way to create pairs directly through ApeFactory
     // Create an initial pair
