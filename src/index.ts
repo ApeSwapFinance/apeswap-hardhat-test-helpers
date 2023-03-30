@@ -3,6 +3,8 @@
  *  the smart contracts developed in this repo.
  */
 export * as dex from './dex';
+export * as dexV3 from './dexV3';
+export * as dexV2AndV3 from './dexV2AndV3'
 export * as farm from './farm';
 export * as farmV2 from './farmV2';
 export * as token from './token';
