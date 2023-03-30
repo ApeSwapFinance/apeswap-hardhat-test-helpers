@@ -1,14 +1,10 @@
 import { SignerWithAddress } from '@nomiclabs/hardhat-ethers/signers'
 import { HardhatEthersHelpers } from 'hardhat/types'
 import { ether } from './utils'
-import SwapRouter02Build from './artifacts-apeswap/dex/contracts/SwapRouter02.json'
-
+import ApeSwapMultiSwapRouterBuild from './artifacts-apeswap/dex/contracts/ApeSwapMultiSwapRouter.json'
 
 // Import Contract Types
-import {
-  SwapRouter02__factory,
-  WNative,
-} from '../typechain-types'
+import { ApeSwapMultiSwapRouter__factory, WNative } from '../typechain-types'
 import { deployMockDex as deployMockDexV2, addLiquidity } from './dex'
 import { deployMockDex as deployMockDexV3 } from './dexV3'
 
@@ -29,9 +25,9 @@ export async function deployDexesAndRouter(
   numPairs = 2,
   mockWBNBoverwrite: WNative | null = null
 ) {
-  const SwapRouter = (await ethers.getContractFactoryFromArtifact(
-    SwapRouter02Build
-  )) as SwapRouter02__factory
+  const ApeSwapMultiSwapRouter = (await ethers.getContractFactoryFromArtifact(
+    ApeSwapMultiSwapRouterBuild
+  )) as ApeSwapMultiSwapRouter__factory
 
   const DEXV3 = await deployMockDexV3(
     ethers,
@@ -55,10 +51,8 @@ export async function deployDexesAndRouter(
     [owner, alice]
   )
 
-  const router = await SwapRouter.deploy(
-    DEXV3.dexFactory.address,
-    DEXV2.dexFactory.address,
-    DEXV3.positionManager.address,
+  const router = await ApeSwapMultiSwapRouter.deploy(
+    [DEXV3.dexFactory.address, DEXV2.dexRouter.address],
     DEXV3.mockWBNB.address
   )
   return {
